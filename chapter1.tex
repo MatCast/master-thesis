@@ -7,7 +7,7 @@ Estimating the volume of glaciers is becoming an increasingly important topic, d
 
 Computing the volume of glaciers is a trivial task once in possession of the data needed for it: the glacier surface and its distributed ice thickness. These data however are not easily obtainable due to the amount of effort needed to collect them. A very big effort in this regard has been done with the Randolph Glacier Inventory (RGI) (\citet{RGI2014}), which is a data set containing a globally complete inventory of glaciers with their surface shapes. The data on ice thicknesses for these glaciers however are much more lackluster(see \ref{featuresimp}). Of the over 200,000 glaciers included in the RGI only 771 have thickness data, and in most of the cases not enough to have a complete thickness distribution along the glacier surface. These data are collected in the Glacier Thickness Database (GlaThiDa \citet{GlaThiDa2014}).
 
-Clearly the only way is to model the glaciers.
+To obtain an estimate of volume for glaciers lacking thickness measurements (the vast majority of the global glaciers), the only possible alternative is to model them.
   
 %The chapter Introduction leads the reader into the subject matter
 %of the thesis. It is sometimes called
@@ -28,7 +28,10 @@ Clearly the only way is to model the glaciers.
 
 % ==== SECTION 2 ===============================================================
 \section{State of Research}\label{research}
-
+In the years a number of different approaches have been used to model the glaciers and estimate their volumes.
+The most simple ones only attempt to compute the volume of the glacier from the relationship between the glaciers surface and it's volume as first stated by \citet{bahr1997}. Using the Buckingham Pi
+theorem they found that the relationship between the area $S$ and the volume of a glacier $V$ is $V \propto S^{\gamma}$ for valley glaciers, and they estimated $\gamma=1.375$ for these glaciers and $\gamma=1.25$ for ice caps. Simliar approaches try also take in consideration other other parameters such as glacier length, width and elevation range (\cite{Grinsted2013}), and surface slope. These type of methods are called ``scaling approaches'' and they yield to a volume estimate for each glacier but not to the distributed ice thickness. Due to the small requirements they are very effective at computing the global volume of glaciers.
+Modeling the distributed ice thickness of glaciers has been the subject of many studies since the 
 %Based on the literature survey, the writer draws a picture of the existing
 %knowledge in a specific field and points to open questions. Hence, after this
 %survey the Introduction will ultimately culminate in the formulation of specific

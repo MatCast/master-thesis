@@ -1,6 +1,5 @@
 \chapter{Methodology}\label{chap2}
 \thispagestyle{plain}
-This seems like it will contain a lot of stuff.... Maybe i can avoid some?
 
 %This chapter provides a detailed description of the methodology. It is
 %sometimes called Experimental Section. Depending on the subject it is a
@@ -25,19 +24,20 @@ This seems like it will contain a lot of stuff.... Maybe i can avoid some?
 
 
 % ==== SECTION 2 ===============================================================
-\section{Glathida Dataset}\label{glathida}
+\section{Data Sets}\label{glathida}
+This section gives an overview of the data used in the analysis done in this thesis. The basics data to run all the analysis have been the Glacier Thickness Database (GlaThiDa), the Randolph Glacier Inventory (RGI), and different digital elevation models (DEMs) which are dependent on the specific glacier. Depending on the region in fact some digital elevation models are a better fit to each glaciers as all of the freely available ones have missing data. ``The best'' digital elevation model has been automatically chosen by the Open Global Glacier Model (OGGM). Through most of the analysis SRTM v4 (\citet{SRTM}) which is a 90m grid resolution DEM has been used. Other DEM might have been used to link the GlaThiDa with RGI (see section \ref{GlaRGI})
 
 \subsection{GlaThiDa}
-GlaThiDa
+The glacier Thickness Database (\citet{GlaThiDa2014}) is a set of data which attempts to put together all the available ice thickness measurements from glaciers and ice caps all around the globe. The database is composed of three different tables. The first one contains an overview of the database, the second one thickness data from maps or digital elevation models (DEM), and the third one, the one used in this thesis, contains the actual point measurements with the thickness data. The measurements were taken with different methods such as terrestrial and airborne radio-echo sounding, ground penetrating radar, direct drilling and other methods. The first database was released in 2014. In 2016 a second version 2.0 and its correction 2.1 were released, and in 2019 version 3.0 and 3.01 were finally released. All the analysis in this work have been done using version 2.1 as version 3.0 was released after a big part of the analysis was already done. According to the \href{https://github.com/ezwelty/glathida/blob/master/CHANGELOG.md}{change log} however most of the changes have been done to the structure of the data base. There were however some measurements additions to the database. The addition of some measurements for some glaciers in Switzerland in particular would be relevant for this thesis, given that most of the analysis done in this work has been conducted over the alpine glaciers. 
 %Use subsections to structure your thesis. The first and second component of the
 %momentum equation is shown in equation (\ref{2equ:1}) and (\ref{2equ:2}),
 %respectively. Together with (\ref{2equ:3}) they form the set of shallow-water
 %equations implemented in a numerical model.
 
 \subsection{RGI}
-RGI
+The Randolph Glacier Inventory (RGI) (\citet{RGI2014}) is a global database of outlines of glaciers, excluding ice sheets. The inventory has been compiled from satellite imagery collected from 1999 onward. Most of the outlines don't express a specific picture in time of the glacier but are a compound of different images of each glacier due to images obstructions such as cloud covers or satellite orbits. The first version of this inventory was released in 2012 and the latest version, RGI Version 6.0 was released in 2017. In this latest release the database comprises more than 220,000 glacier outlines. This is the version used for all the analysis in this thesis.
 
-\subsection{linking them}
+\subsection{Linking GlaThiDa and RGI}\label{GlaRGI}
 linking them using OGGM
 
 \subsection{Some stats about GlaThiDa}
