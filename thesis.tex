@@ -2,6 +2,12 @@
 % ---- document class (use appropriate driver for DIV to PS/PDF conversion):
 \documentclass[12pt,a4paperx]{book}
 
+% TODO notes package
+\usepackage{todonotes}
+\usepackage{etoolbox}
+\makeatletter
+\pretocmd{\@todo}{\GenericWarning{}{There's sometthing to do here}}{}{}
+\makeatother
 
 % ---- graphicx package:
 \usepackage{graphicx}
