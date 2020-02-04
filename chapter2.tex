@@ -58,11 +58,37 @@ Most of the glaciers with thickness observation are in the Greenland Periphery r
 \begin{figure}[!tp]
 	\centering		  
 	\includegraphics[width=1.\textwidth]{figures/Observations_per_region.pdf}
-	\label{fig:glareg}
 	\caption{On the left side the number of glaciers in the RGI with thickness observations in the GlaThiDa are shown per RGI region. On the right side the percentage of glaciers for each region with thickness observations is shown instead.}
+	\label{fig:glareg}
 \end{figure}
 
 More than two third of the RGI entities with GlaThiDa measurements are glaciers while the rest are ice caps. Land terminating glaciers and ice caps are the vast majority.
+
+\subsubsection{Measurements Distribution per Glacier}
+Not all the glaciers with measurements are perfectly covered over the whole glacier area. In fact around 42\% of the glaciers have less than 100 thickness observations. Given that some glaciers can extend for over $100 km^2$, it’s clear that some of them are very poorly covered.
+\begin{figure}[!tp]
+	\centering		  
+	\includegraphics[width=1.\textwidth]{figures/Observations_per_skm.pdf}
+	\caption{On the Left: distribution of glaciers with less than 100 observations per squared kilometer; there is a great number of glaciers with less than 20 thickness observations per squared kilometer. On the right: distribution of glaciers according to the percentage of their altitude bands covered.}
+	\label{fig:glaobs}
+\end{figure}
+
+More than 91\% of all the glaciers (represented in the figure above) have less than 100 thickness measurements per squared kilometer. Almost 44\% of all the glaciers with thickness observations have less than 5 observations per squared kilometer (see Fig. \ref{fig:glaobs}).
+
+OGGM was used to generate a gridded map of each glacier represented in the GlaThiDa. With this map one can divide each glacier in $100m$ altitude bands to check how many of those bands contain at least one thickness measurement.
+Almost half of the glaciers have observations in at least half of the 100m altitude bands (see Fig. \ref{fig:glaobs}). Glaciers with few observations but well distributed over their length can be very useful for understanding glacier thickness patterns and for model validation.
+
+\subsubsection{Survey Year}
+Measurements were taken between 1977 and 2015, but most of them after 2005 (see Fig. \ref{fig:glayears}). The spread in the dates of the campaigns for taking the observations could potentially create problems when trying to compare glaciers with each other to find similar patterns, but also when using the data for model validation.
+Most glacier models make in fact use of digital elevation models to setup the model run. Any digital elevation model is compiled with data available at the time of its construction. The time difference between the date of data assimilation for the digital elevation model, and the date of the survey for the thickness observation, could be in the order of several years. This would create an error when validating the model.
+\begin{figure}[!tp]
+	\centering		  
+	\includegraphics[width=1.\textwidth]{figures/Observations_per_year.pdf}
+	\caption{Distribution of glaciers with observations in the GlaThiDa according to the year when the measurements for each glacier were taken.}
+	\label{fig:glayears}
+\end{figure}
+
+\subsubsection{Measurements Distribution per Glacier}
 \href{https://oggm.org/2019/03/21/GlaThiDa-statistics/}{GlaThiDa Statistics} about glaciers distributions and so on 
 
 
