@@ -115,8 +115,10 @@ The three algorithm used are:
 \begin{itemize}
 	\item Linear Regression
 	\item Random Forest Regression
-	\item Support Vector Machine Regression (SVM)
+	\item Support Vector Regression (SVR)
 \end{itemize}
+
+The algorithms have been applied to the data using the python package \href{https://scikit-learn.org/}{scikit learn}.
 %The way the algorithm achieves this without instructions from the programmer is with an iterative process which uses the training data to make a first prediction, compare the prediction with the the desired output value, 
 \subsection{Linear Regression}
 Linear Regression is probably one of the simplest machine learning algorithm and also one of the most used (even though many people probably don't know it is a machine learning algorithm).
@@ -140,7 +142,7 @@ This algorithm is clearly only useful for cases when the output variables linear
 	\caption{Representation of a decision tree model. The tree is pictured upside-down with the root on the top and the branches and leaves on the bottom.}
 	\label{fig:tree}
 \end{figure}
-Random Forest is an algorithm which uses ensemble learning to extend and improve the performances of decision trees algorithm. The method was first proposed by \citet{RandomHo1995}. A decision tree is an algorithm used to predict the desired value from a set of data. It works by splitting the data-set into a number of branches by imposing conditions on each feature. Every split leads to a subset of the data-set which can be split further to better achieve the desired outcome(see \ref{fig:tree}). In order to choose how to split the data on each node the algorithm calculates the sum of the squared residual for splitting the data-set on a particular condition and chooses the condition which minimizes this sum. Let $\bm{X} = \{x_{i1},\ldots ,x_{ip}\}_{i=1}^{n}$ be the $n$-th input values $p$ the different attributes  our data-set and $\mathbf{y} = \{y_{1},\ldots ,y_{n}\}$ the output values (the values we want to predict). Let's assume for simplicity that we are splitting the data based on a condition on the first attribute. The first split in the tree divides the data-set into two subsets $S_1 = {1,\ldots ,l}$ and $S_2 = {l, l+1, \ldots ,n}$. The subset are set so that the following is minimum:
+Random Forest is an algorithm which uses ensemble learning to extend and improve the performances of decision trees algorithm. The method was first proposed by \citet{RandomHo1995}. A decision tree is an algorithm used to predict the desired value from a set of data. It works by splitting the data-set into a number of branches by imposing conditions on each feature. Every split leads to a subset of the data-set which can be split further to better achieve the desired outcome(see \ref{fig:tree}). In order to choose how to split the data on each node the algorithm calculates the sum of the squared residual for splitting the data-set on a particular condition and chooses the condition which minimizes this sum. Let $\bm{X} = \{x_{i1},\ldots ,x_{ip}\}_{i=1}^{n}$ be the $n$-th input values $p$ the different attributes  our data-set and $\mathbf{y} = \{y_{1},\ldots ,y_{n}\}$ the output values (the values we want to predict). Let's assume for simplicity that we are splitting the data based on a condition on the first attribute. The first split in the tree divides the data-set into two subsets $S_1$ with $l$ data points and $S_2$ with $n-l$ data points. The subsets are defined so that the following is minimized:
 \begin{equation}\label{eq:treeres}
 \sum_{i \in S_1}(\overline{y_1}-y_i)^2 + \sum_{j \in S_2}(\overline{y_2}-y_j)^2
 \end{equation}
@@ -151,8 +153,74 @@ To solve this problem Random Forest algorithm relay on an ensemble of decision t
 
 
 
-\subsection{SVM}
-Explain Support Vector Machine (do i need to write down the specific mathematics?)
+\subsection{Support Vector Regression}
+Support Vector Regression (SVR) was first presented as regression extension of the support vector machine algorithm (SVM) by \citet{SVR1997}. Support vector machine is a supervised machine learning algorithm for classification (i.e. the desired output has binary values) first proposed by \citet{SVM1964}.
+
+Let's assume a training data-set of $n$ points ${({\mathbf {x}}_{1},y_{1}),\ldots ,({\mathbf {x}}_{n},y_{n}),}$, where $y_{i}$ are either $1$ or -$1$, each indicating a different class, the value we want to predict, for the points ${\mathbf {x}}_{i}$. Each ${\mathbf {x}_{i}}$ is a $p$-dimensional real vector. We want to find the decision boundary that divides the group of points $\mathbf {x}_{i}$ for which $y_{i}=1$ from the group of those for which $y_{i}=-1$. This boundary is defined in such a way that the distance between the hyperplane and the closest ${\mathbf {x}}_{i}$ from either group is maximized.
+An hyperplane is defined as the points ${\mathbf {x}}$ satisfying 
+\begin{equation}\label{eq:svm}
+\mathbf {w}\cdot \mathbf {x}-b=0
+\end{equation}
+
+where $\mathbf {w}$ is the normal vector to the plane. $b$ determines the offset of the hyperplane from the origin.
+
+If the training data were linearly separable two parallel hyperplanes must exist separating the two classes of data points such that the distance between the two is maximized. The equations for these planes are respectively:
+
+\begin{align}
+\label{eq:planes1}
+	\begin{split}
+	\mathbf {w}\cdot \mathbf {x}-b = 1, \\
+	\mathbf {w}\cdot \mathbf {x}-b = -1
+	\end{split}
+\end{align}
+
+These two hyperplanes would determine the margin between the two groups. The data points ${\mathbf {x}}_{i}$ lying nearest to these two hyperplanes are called the support vectors. The hyperplane lying exactly in the middle of the two is called decision boundary. This hyperplane separates the two groups of data. If one wanted to label a new data point not used to train the model, this point would be classified depending on which side of the decision boundary it would lie on. This is called a hard margin.
+
+\begin{figure}[!tp]
+	\centering		  
+	\includegraphics[width=1.\textwidth]{figures/SVM.png}
+	\caption{Representation of support vector machine in a 2-dimensional space. On the left a model is trained with the creation of an hard-margin which correctly classifies each sample in the training data-set. On the right a soft-margin is selected which allows a number of miss-classified points to lie inside the margin.}
+	\label{fig:svm}
+\end{figure}
+
+The distance between the two plains is ${\frac {2}{\|{\mathbf {w}}\|}}$. In order to maximize this distance we then need to minimize $\|{\mathbf {w}}\|$, with the constrain
+
+\begin{equation}\label{eq:svmconstrain}
+y_{i}({\mathbf {w}}\cdot {\mathbf {x}}_{i}-b)\geq 1
+\end{equation}
+for all $i=1,\ldots ,n$ given by the fact that each point must lie outside the margin (see Eq. \ref{eq:svrconstrain}).
+
+This algorithm works well for linearly separable data-sets. If however the data were non linearly separable, or if outliers or miss-classifications were included in the data-set, as in most real  world cases, one would instead choose a so called "soft-margin" which would work exactly like the hard margin but with allowance for a number of miss-classified data points (see Fig. \ref{fig:svm})
+
+To extend this concept for a regression case, i.e. a case where the output values $y_{i}$ are continuous, we can use the same concept with but with the objective of finding a function $f(x)$ which deviates from each $y_{i}$ by a value not greater than $\varepsilon$ and is as flat as possible.
+
+\begin{equation}\label{eq:svr}
+f(x) = \mathbf {w}\cdot \mathbf {x}-b
+\end{equation}
+
+This would mean to minimize $\|{\mathbf {w}}\|$ subject to the constrain:
+
+\begin{equation}\label{eq:svrconstrain}
+|y_{i} - {\mathbf {w}}\cdot {\mathbf {x}}_{i}+b|\leq \varepsilon
+\end{equation}
+for all $i=1,\ldots ,n$.
+
+To extend the algorithm to non linear cases SVM and SVR apply the so called "kernel trick". The algorithm is applied in a transformed higher dimensional space. The resulting boundary hyperplane is linear in the transformed space but might be non linear in the original space.
+There are different ways, called kernels, to transform the space to a higher dimensional one. Some of the most common ones, and the ones available in the package \href{https://scikit-learn.org/}{scikit learn} used for the analysis in this thesis, are:
+\begin{itemize}
+	\item Polynomial
+	\item Radial Basis Function
+	\item Sigmoid
+\end{itemize} 
+
+The one chosen for the analysis in this thesis is the Radial Basis Function kernel (rbf) which transforms the space like so:
+\begin{equation}\label{eq:rbf}
+k({\mathbf {x_{i}}},{\mathbf {x_{j}}})=\exp(-\gamma \|\mathbf {x_{i}}-\mathbf {x_{j}}\|^{2})
+\end{equation}
+for $\gamma >0$.
+The algorithm basically adds dimensions which are dependent on the distance between the data points. Points with higher distances are less influenced by each other because of the exponential decay which relates the distances.
+
+The kernel trick and is what makes support vector regression so powerful because it allows the algorithm to learn from non linear relationship between the data.
 
 \subsection{Tuning parameters}
 How did we decide which parameters to use (maybe we can just leave it for the appendix)
