@@ -89,14 +89,6 @@ Most glacier models make in fact use of digital elevation models to setup the mo
 \end{figure}
 
 
-\section{Choosing Features}\label{features}
-
-\subsection{Putting together the features}
-How did we get the features for training: OGGM.
-
-\subsection{Which features did we choose}
-The features we chose and why.
-
 \section{Machine Learning Algorithms}\label{ML}
 Machine learning is a mathematical method which enables computers to perform a specific task without giving it the specific instructions on how to do it. This is achieved using algorithms to build a model from data usually called the ``training data''. This data are given to the algorithm which uses an iterative process to create the final model. 
 
@@ -124,7 +116,7 @@ The algorithms have been applied to the data using the python package \href{http
 Linear Regression is probably one of the simplest machine learning algorithm and also one of the most used (even though many people probably don't know it is a machine learning algorithm).
 
 Given a set of input data $\bm{X} = \{x_{i1},\ldots ,x_{ip}\}_{i=1}^{n}$ and a corresponding output $\mathbf{y} = \{y_{1},\ldots ,y_{n}\}$, the algorithm finds the best set of $\bm{\beta} = \{\beta_{i1},\ldots ,\beta_{ip}\}_{i=1}^{n}$ and $\bm{\varepsilon} = \{\varepsilon_{1},\ldots ,\varepsilon_{n}\}$ such that:
-\begin{equation}
+\begin{equation}\label{eq:linear}
 \mathbf {y} = \bm{\varepsilon} + \bm{\beta}\bm{X}
 \end{equation}
 In order to find $\bm{\varepsilon}$ and $\bm{\beta}$ which best predict the desired $\mathbf {y}$, one of the most common approaches is to minimize the loss function
@@ -222,23 +214,75 @@ The algorithm basically adds dimensions which are dependent on the distance betw
 
 The kernel trick and is what makes support vector regression so powerful because it allows the algorithm to learn from non linear relationship between the data.
 
+\begin{figure}[!tp]
+	\centering		  
+	\includegraphics[width=1.\textwidth]{figures/kernel_trick.png}
+	\caption{Representation of the kernel trick: the initial 2-dimensional space on the left gets transformed into a 3-dimensional one on the right by the kernel function. An hyperplane can be fit in the new 3-dimensional space to correctly separate the data with a linear decision boundary.}
+	\label{fig:kernel}
+\end{figure}
+
 \subsection{Tuning parameters}
 How did we decide which parameters to use (maybe we can just leave it for the appendix)
 
 \section{Training method}\label{training}
-use sklearn train\_test\_split 20 times
+In order to train the model one needs to feed the chosen machine learning algorithm a training data-set. One could simply take all the data from the set and feed the to the algorithm. The trained model would then be able to make predictions on a new set of data for which we are lacking labels. In this specific case one could take the input parameters chosen to train the model with, from glaciers for which we are lacking thickness measurements, and predict the thickness for those glaciers. Even more simplistically one could obtain the whole ice thickness distribution for glaciers where we do have thickness measurements, just because these measurements never cover the whole glacier surface. In this way one could extrapolate the thickness distribution of the glacier from the trained model.
+
+The problem with the approach of using all the labeled data available for training however, is the risk of over-fitting the model and the fact that there is no way of assessing the model performances for glaciers without thickness measurements available.
+Over-fitting in machine learning means to train a model which is very good at labeling data which were used for training the model, but not able to generalize the results for making predictions about new data. This would lead to a model which is very capable of predicting ice thicknesses for data points which were fed to the algorithm to train the model, but wouldn't be able to make correct predictions for data outside the ones used for the training process. 
+
+In order to avoid over fitting and to be able to have data to asses the performance of the trained model, only part of the available data from the GlaThiDa database was fed to the algorithms to train the models. In particular 75\% of the data were used for training the model and 25\% for assessing performance on new data. This process was achieved with a function available form the python package \href{https://scikit-learn.org/}{scikit learn} which shuffles the data and then randomly picks the data points used for training. The algorithm actually uses a pseudo-random generator to pick the data which one can fix in order to always  have the same data picked by the algorithm when dividing them for training and testing. This process was then repeated 20 times to be able to compare the model performances subject to training with different data. This should improve the ability of generalization for the trained model (\citet{crossval1995}).
 
 \section{Scoring method}\label{scoring}
-metrics to compare the goodness of models
+Once the the model is trained with the training subset of data as described in section \ref{training}, it is important to choose a way to assess the performance of the model. To do this the score method from \href{https://scikit-learn.org/}{scikit learn} has been used on all the models. Let assume the testing input data to consist of $n$ points. Let $y_i$ be the $i$-th prediction done by the model for the $\mathbf{x_i}$ input value of this $n$ points. Let $y^*_i$ be the $i$-th ``true'' label for the $\mathbf{x_i}$ input value and $\overline{y^*}$ the mean value for these true labels (i.e. $y^*_i$ is the thickness value from the GlaThiDa database). The score is then defined as:
+
+\begin{equation}\label{eq:score}
+R^2 = 1 - \frac{\sum_{i}^{n}(y^*_i-y_i)^2}{\sum_{i}^{n}(y^*_i-\overline{y^*})^2}
+\end{equation}
+
+The best possible score is $R^2 = 1$ and it can be negative (because the model can be arbitrarily worse). A model always predicting the same constant value of $y$ independently on the input values would get a $R^2 = 0$. Note that the $R^2$ score can be negative in case the model performance were worse than a model with constant output $y$.
 
 \section{Features Importance}\label{featuresimp}
-what is feature importance.
+Aside for making predictions trained machine learning models can be used to gather information about the importance of each feature in the training data-set. In other words it is possible to get information about which of the features have the most influence when making a prediction. This can be interesting to understand the physical processes driving the ice thickness distribution.
 
-\subsection{Shuffle}
-Shuffle
+In a linear model this could be easily done my looking at the the magnitude of the coefficients of the linear equation \ref{eq:linear}. In other words one would look at the values of the components of the $\mathbf{w}$ vector. The higher the magnitude the more influential is that feature on making prediction.
+However for more complex models like the Support Vector Regression and Random Forest Regression it is not possible to obtain these values because the relationship between the input values and the predicted ones is non-linear. This would actually be possible in the case of a Support Vector Regression using a linear kernel but the space transformation applied by non linear kernel trick makes this impossible.
 
-\subsection{partial dependence plot}
-partial dependence plot 
+To solve the aforementioned problem and gather information about the importance of the features two alternative methods have been used:
+\begin{itemize}
+	\item Permutation Importance
+	\item Partial Dependence plots
+\end{itemize} 
+
+\subsection{Permutation Importance}
+
+\begin{figure}[!tp]
+	\centering		  
+	\includegraphics[width=1.\textwidth]{figures/permutation.png}
+	\caption{Representation of shuffling the data for a sample data-set. Input values for one features are shuffled randomly switching the data with each other. The value to predict however is not switched leading to an input value for the permuted feature which is different from the ``true'' one.}
+	\label{fig:permutation}
+\end{figure}
+
+Permutation importance is a simple yet effective way of getting information about which feature drives the outcome in the predictions. To use this method one needs to split the data into two group, one for training and one for testing as reported in section \ref{training}. The method works by training the model as usual. After training is completed the accuracy of the model is tested using the sample left out from the training process. Instead of using the validation inputs as they are in though, the input values from one of the features get randomly shuffled. In this way for example for the selected feature the $i$-th input value corresponding to the $i$-th label gets switched with the $j$-th one corresponding to the $j$-th output one. Now when trained the model will get the $j$-th input value for the $i$-th output one and vice-versa. This happens for all the inputs in the selected feature. The score of the model as defined in Eq. \ref{eq:score} is computed, and the process is repeated several time in order to have a distribution of scores with different shuffled samples. An average value for the difference between the score of the non shuffled validation sample and the shuffled sample is computed together with it's standard deviation.
+
+\begin{equation}\label{eq:perm}
+P = S^*-\overline{S_p}
+\end{equation} 
+where $S^*$ represents the score of the non-shuffled sample and $\overline{S_p}$ the average score for the shuffled sample.
+This process is repeated for all the features in the input data to get the permutation importance coefficient for all of them.
+A higher coefficient means that shuffling the input values for the considered feature resulted in a decrease in the performance of the model. The higher the coefficient then, the higher should be the importance of the feature for computing the prediction. The value of the coefficient can be negative meaning that shuffling the features actually improved the performance of the model and that the feature is probably not influencing the prediction.
+
+\subsection{Partial Dependence Plots}
+Partial dependence plots are simple charts which show the change in value of the prediction dependent on the change in value for the feature one wants to analyze. They are a way of visualizing the $\mathbf{w}$ vector in cases for which the vector coefficients can not be extrapolated. Features more relevant to the prediction will show higher changes in the prediction outcome with changes in the feature value.
+
+For the linear regression model these plots will look like straight lines with higher steepness indicating more relevance in the prediction outcome. For non linear models these lines could diverge very much from a straight line; the feature could even show up to be more or less relevant when changing in value.  
+
+\section{Choosing Features}\label{features}
+
+\subsection{Putting together the features}
+How did we get the features for training: OGGM.
+
+\subsection{Which features did we choose}
+The features we chose and why. 
 %\subsubsection{Subsubsection}
 %You can also use ``subsubsections''. However, they do not carry a separate
 %heading number and they do not appear in the Table of Contents.
