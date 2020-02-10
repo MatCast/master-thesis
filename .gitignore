@@ -2,6 +2,7 @@
 *.gz
 *.zip
 README.txt
+ametsoc.bst
 
 ## Core latex/pdflatex auxiliary files:
 *.aux
