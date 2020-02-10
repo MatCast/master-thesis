@@ -258,7 +258,7 @@ To solve the aforementioned problem and gather information about the importance 
 \begin{figure}[!tp]
 	\centering		  
 	\includegraphics[width=1.\textwidth]{figures/permutation.png}
-	\caption{Representation of shuffling the data for a sample data-set. Input values for one features are shuffled randomly switching the data with each other. The value to predict however is not switched leading to an input value for the permuted feature which is different from the ``true'' one.}
+	\caption{Representation of shuffling the data for a sample data-set. Input values for one features are shuffled randomly switching the data with each other. The score of the model computed with this permuted data is computed and is compared  to the score the model would have for the non-permuted feature.}
 	\label{fig:permutation}
 \end{figure}
 
@@ -278,11 +278,54 @@ For the linear regression model these plots will look like straight lines with h
 
 \section{Choosing Features}\label{features}
 
+\begin{table}
+	\centering
+	\caption{Representation of the data-set used to train the model: rows are grid cells with thickness observations associated with them. Each row is made of $p$ features each connected to a single thickness.}
+	\label{tab:features}
+	\begin{tabular}{|l|l|l|l|l|l|l|} 
+		\cline{2-7}
+		\multicolumn{1}{l|}{} & Feature 1 & ... & Feature $j$ & ... & Feature $p$ & Thickness \\  
+		\hline
+		$x_1$              & $x_{11}$ & ... & $x_{1j}$     & ... & $x_{1p}$     & $y_1$ \\   
+		\hline
+		...                   & ...       & ... & ...           & ... & ...           & ...    \\     
+		\hline
+		$x_i$              & $x_{i1}$ & ... & $x_{ij}$     & ... & $x_{ip}$     & $y_i$    \\
+		\hline
+		...                   & ...       & ... & ...           & ... & ...           & ...  \\       
+		\hline
+		$x_n$              & $x_{n1}$ & ... & $x_{nj}$     & ... & $x_{np}$     & $y_n$   \\      
+		\hline
+	\end{tabular}
+\end{table}
+
+
+The GlaThiDa database comes "only" with ice thickness observations. There is no information about relevant data which could influence the ice thickness distribution for the glaciers. To train a machine learning model however, it is necessary to feed the algorithm some input variables which should influence the ice thickness. Any variable could be chosen in order to do this, but it is sensible to choose from those which are believed to be responsible for the ice thickens distribution. At the end of the process of choosing the features one ends up with a data-set looking like Table \ref{tab:features}. Each row represents a grid cell on the glacier map with ice thickness observations and each of them is associated with $p = 4$ features. Features are used as input values from the machine learning algorithm to and the ice thickness measurements are the desired output for these input values. 
+
+
+\subsection{Which features did we choose}
+The input variables used to train the models have been chosen from simple geometrical and physical assumptions. They are:
+
+\begin{itemize}
+	\item Topography (Altitude above sea level)
+	\item Distance from the border of the glacier
+	\item Slope angle
+	\item Linear Mass Balance
+\end{itemize}
+The altitude has been chosen for two reasons: relative altitude, altitude compared to the lowest point of the glacier, is a proxy for glacier flow as the ice-flow in a glaciers is driven by gravity,. Absolute altitude on the other hand can be useful in picking differences between one glacier and another.
+
+The distance from the border should be proportional to the ice thickness, as in general the ice gets thinner near the borders of the glaciers and thicker in it's center. 
+
+The slope angle determines the steepness of the topography and is proportional to the ice flux velocity.
+
+The linear mass balance is a constant mass balance as a linear function of altitude. It assumes that the altitude integrated mass balance over the whole glacier is $0$. Grid points with higher positive values are assumed to be points of accumulation hence possible points of deeper ice thickness. 
+
+  
 \subsection{Putting together the features}
 How did we get the features for training: OGGM.
 
-\subsection{Which features did we choose}
-The features we chose and why. 
+\subsection{Scaling the Features}
+
 %\subsubsection{Subsubsection}
 %You can also use ``subsubsections''. However, they do not carry a separate
 %heading number and they do not appear in the Table of Contents.
