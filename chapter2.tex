@@ -112,7 +112,7 @@ The three algorithm used are:
 
 The algorithms have been applied to the data using the python package \href{https://scikit-learn.org/}{scikit learn}.
 %The way the algorithm achieves this without instructions from the programmer is with an iterative process which uses the training data to make a first prediction, compare the prediction with the the desired output value, 
-\subsection{Linear Regression}
+\subsection{Linear Regression}\label{linearregr}
 Linear Regression is probably one of the simplest machine learning algorithm and also one of the most used (even though many people probably don't know it is a machine learning algorithm).
 
 Given a set of input data $\bm{X} = \{x_{i1},\ldots ,x_{ip}\}_{i=1}^{n}$ and a corresponding output $\mathbf{y} = \{y_{1},\ldots ,y_{n}\}$, the algorithm finds the best set of $\bm{\beta} = \{\beta_{i1},\ldots ,\beta_{ip}\}_{i=1}^{n}$ and $\bm{\varepsilon} = \{\varepsilon_{1},\ldots ,\varepsilon_{n}\}$ such that:
@@ -145,7 +145,7 @@ To solve this problem Random Forest algorithm relay on an ensemble of decision t
 
 
 
-\subsection{Support Vector Regression}
+\subsection{Support Vector Regression}\label{svr}
 Support Vector Regression (SVR) was first presented as regression extension of the support vector machine algorithm (SVM) by \citet{SVR1997}. Support vector machine is a supervised machine learning algorithm for classification (i.e. the desired output has binary values) first proposed by \citet{SVM1964}.
 
 Let's assume a training data-set of $n$ points ${({\mathbf {x}}_{1},y_{1}),\ldots ,({\mathbf {x}}_{n},y_{n}),}$, where $y_{i}$ are either $1$ or -$1$, each indicating a different class, the value we want to predict, for the points ${\mathbf {x}}_{i}$. Each ${\mathbf {x}_{i}}$ is a $p$-dimensional real vector. We want to find the decision boundary that divides the group of points $\mathbf {x}_{i}$ for which $y_{i}=1$ from the group of those for which $y_{i}=-1$. This boundary is defined in such a way that the distance between the hyperplane and the closest ${\mathbf {x}}_{i}$ from either group is maximized.
@@ -322,9 +322,10 @@ The linear mass balance is a constant mass balance as a linear function of altit
 
   
 \subsection{Putting together the features}
-How did we get the features for training: OGGM.
+As mentioned GlaThiDa comes with no information about the glaciers aside for the ice thickness observations. In order to get the input data mentioned in the previous section, the OGGM model has been used. This is an open source python based model for modeling glaciers around the globe. The main way it has been used for this thesis was to download and put together the digital elevation models, smooth them if needed and project them to create a map of the glaciers using RGI for the glaciers outlines. The features where then computed from OGGM using basic geometrical formulas. 
 
 \subsection{Scaling the Features}
+In order to have more comparable un  \ref{linearregr} and \ref{svr},\citet{Scale2005} the 
 
 %\subsubsection{Subsubsection}
 %You can also use ``subsubsections''. However, they do not carry a separate
