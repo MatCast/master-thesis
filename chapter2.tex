@@ -303,7 +303,7 @@ For the linear regression model these plots will look like straight lines with h
 The GlaThiDa database comes "only" with ice thickness observations. There is no information about relevant data which could influence the ice thickness distribution for the glaciers. To train a machine learning model however, it is necessary to feed the algorithm some input variables which should influence the ice thickness. Any variable could be chosen in order to do this, but it is sensible to choose from those which are believed to be responsible for the ice thickens distribution. At the end of the process of choosing the features one ends up with a data-set looking like Table \ref{tab:features}. Each row represents a grid cell on the glacier map with ice thickness observations and each of them is associated with $p = 4$ features. Features are used as input values from the machine learning algorithm to and the ice thickness measurements are the desired output for these input values. 
 
 
-\subsection{Which features did we choose}
+\subsection{The features chosen}\label{features-chosen}
 The input variables used to train the models have been chosen from simple geometrical and physical assumptions. They are:
 
 \begin{itemize}
@@ -318,11 +318,12 @@ The distance from the border should be proportional to the ice thickness, as in 
 
 The slope angle determines the steepness of the topography and is proportional to the ice flux velocity.
 
-The linear mass balance is a constant mass balance as a linear function of altitude. It assumes that the altitude integrated mass balance over the whole glacier is $0$. Grid points with higher positive values are assumed to be points of accumulation hence possible points of deeper ice thickness. 
-
+The linear mass balance is a constant mass balance as a linear function of altitude. It assumes that the altitude integrated mass balance over the whole glacier is zero. Grid points with higher positive values are assumed to be points of accumulation hence possible points of deeper ice thickness.
   
 \subsection{Putting together the features}
 As mentioned GlaThiDa comes with no information about the glaciers aside for the ice thickness observations. In order to get the input data mentioned in the previous section, the OGGM model has been used. This is an open source python based model for modeling glaciers around the globe. The main way it has been used for this thesis was to download and put together the digital elevation models, smooth them if needed and project them to create a map of the glaciers using RGI for the glaciers outlines. The features where then computed from OGGM using basic geometrical formulas. 
+
+Each entry point in the training data-sets correspond then to a grid cell of the DEM created by OGGM. The ice thickness used as label for the training data-sets is then not directly the one coming from the GlaThiDa database. It is rather the averaged ice thickness observed over the grid cell of the DEM.
 
 \subsection{Scaling the Features}
 Before training a support vector machine algorithm it is important to apply scaling to the data fed to the algorithm \citet{ScalingSVM2003}. Scaling in this context means to have all the input features for training the algorithm fit more or less into the same range of values (often $[-1,1]$). This is done for two main reasons: to avoid features in greater numeric ranges dominating those in smaller numeric ranges, and to avoid some numerical difficulties during computation. This procedure is not required neither for linear regression nor for random forest regression. In this work however all the data fed to all the algorithm has been scaled as this should not make the performance of the other algorithm worse but it allows for an easier comparison between the models, especially when looking at the importance of each features. In particular for the linear regression model, it makes looking at the importance of the features based on the predicted coefficients straight forward.
@@ -334,6 +335,13 @@ z_{ip} = \frac{(x_{ip} - \overline{x_p})}{\sigma_p}
 \end{equation}
 
 This transforms the data such has the mean of the scaled feature is $\overline{z_p}=0$ and its standard deviation $\sigma^z_p=1$.
+
+\subsection{Training Region}\label{alps}
+In principle a supervised machine learning algorithm could learn from any input data which has an associated label. Recalling section \ref{glathida} one can see that for many glaciers only very few thickness observations were present. Extrapolating the thickness distribution for those glaciers from those few observations would be very difficult. These sparse measurements however can still be used well by the machine learning algorithm to train the model. In principle then each observation is a useful one even if it was the only one available for a single glacier and one could use all the thickness observations present in the GlaThiDa data-set to train the model. In this way one could train a model which could predict the ice thickness for glaciers on the whole globe.
+
+As mention in section \ref{features-chosen} however the only features chosen for training the algorithm are those related to the geometrical properties of the glacier surface. No other information as for instance the climate of the glacier region, is used to make train the model. This could lead to a model which is not very precise in assessing the ice thickness of the glaciers. In particular regions with more thickness observations would have bias the training of the algorithm and those regions would end up influencing the model output for the whole globe.
+
+In order to avoid these problems we decided to arbitrarily train all the model on region 11 of the RGI inventory corresponding to Central Europe and in particular the alps. 
 
 %\subsubsection{Subsubsection}
 %You can also use ``subsubsections''. However, they do not carry a separate
