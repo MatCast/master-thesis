@@ -10,7 +10,13 @@ The first model to be analyzed is the one obtained from training the linear regr
 This is usually not the case with linear regression, hence in principle there is no need to only use a sub-sample of the data to train the model. The $R^2$ coefficient could be computed using the whole data-set to train the model. Following however the linear regression algorithm has been trained using the same procedure used for the other algorithms to be able to better compare the models with each other and try to find similarities and differences.     
 
 \subsection{Score and volume spread}\label{lr-score}
-Figure \ref{fig:lr-score} shows the volume and score change  for 20 different sub-samples used for training the linear regression algorithm. Each number on the x-axis represents a different sample used for training: of all the alpine glaciers observations in the GlaThiDa, 75\% of them have been used for  training the model and the resulting 25\% to compute the score. The volume has been computed on the full sample. The mean volume for the 20 different sub-samples is $1.58\times 10^{10}$ $m^3$ with a relative standard deviation of 0.74\%. Sample 14 clearly predicts the lowest of all volumes.
+Figure \ref{fig:lr-score} shows the volume and score change  for 20 different sub-samples used for training the linear regression algorithm. Each number on the x-axis represents a different sample used for training: of all the alpine glaciers observations in the GlaThiDa, 75\% of them have been used for  training the model and the resulting 25\% to compute the score. 
+
+The volume show in the right side of Figure \ref{fig:lr-score} has been computed on the full sample of glaciers but each time using the different model derived from training it with each sub-sample. The mean volume for the 20 different sub-samples is $1.60\times 10^{10}$ $m^3$ with a relative standard deviation of 0.74\%. Sample 14 clearly predicts the lowest of all volumes.
+
+It is worth nothing that the model predicts values below zero for certain points. These have however been rounded to zero as a thickness below zero makes no physical sense.
+
+The average score is 0.402 with a high 25.1\% relative standard deviation. Clearly this is due to the score dropping for sub-samples 5, 14 and 19. For most sub-samples the score is in fact above 0.4 but for those three it drops even below 0.2. Sub-sample 14 then leads to the lowest volume and a low score compared to the average. 
 
 \begin{figure}[!tp]
 	\centering		  

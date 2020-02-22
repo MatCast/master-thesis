@@ -3,6 +3,7 @@
 *.zip
 README.txt
 ametsoc.bst
+.debris
 
 ## Core latex/pdflatex auxiliary files:
 *.aux
