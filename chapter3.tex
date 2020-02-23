@@ -10,13 +10,6 @@ The first model to be analyzed is the one obtained from training the linear regr
 This is usually not the case with linear regression, hence in principle there is no need to only use a sub-sample of the data to train the model. The $R^2$ coefficient could be computed using the whole data-set to train the model. Following however the linear regression algorithm has been trained using the same procedure used for the other algorithms to be able to better compare the models with each other and try to find similarities and differences.     
 
 \subsection{Score and volume spread}\label{lr-score}
-Figure \ref{fig:lr-score} shows the volume and score change  for 20 different sub-samples used for training the linear regression algorithm. Each number on the x-axis represents a different sample used for training: of all the alpine glaciers observations in the GlaThiDa, 75\% of them have been used for  training the model and the resulting 25\% to compute the score. 
-
-The volume show in the right side of Figure \ref{fig:lr-score} has been computed on the full sample of glaciers but each time using the different model derived from training it with each sub-sample. The mean volume for the 20 different sub-samples is $1.60\times 10^{10}$ $m^3$ with a relative standard deviation of 0.74\%. Sample 14 clearly predicts the lowest of all volumes.
-
-It is worth nothing that the model predicts values below zero for certain points. These have however been rounded to zero as a thickness below zero makes no physical sense.
-
-The average score is 0.402 with a high 25.1\% relative standard deviation. Clearly this is due to the score dropping for sub-samples 5, 14 and 19. For most sub-samples the score is in fact above 0.4 but for those three it drops even below 0.2. Sub-sample 14 then leads to the lowest volume and a low score compared to the average. 
 
 \begin{figure}[!tp]
 	\centering		  
@@ -24,6 +17,42 @@ The average score is 0.402 with a high 25.1\% relative standard deviation. Clear
 	\caption{Linear Regression: Volume and score values of the model after training it with 20 different sub-sample of data. On the x-axis each number identifies a different sample of data. On the left the total volume of the alpine glaciers present in the GlaThiDa. On the right the $R^2$ coefficient for values left out of the training sample.}
 	\label{fig:lr-score}
 \end{figure}
+
+Figure \ref{fig:lr-score} shows the volume and score change  for 20 different sub-samples used for training the linear regression algorithm. Each number on the x-axis represents a different sample used for training: of all the alpine glaciers observations in the GlaThiDa, 75\% of them have been used for  training the model and the resulting 25\% to compute the score. 
+
+The volume show in the right side of Figure \ref{fig:lr-score} has been computed on the full sample of glaciers but each time using the different model derived from training it with each sub-sample. The mean volume for the 20 different sub-samples is $1.60\times 10^{10}$ $m^3$ with a relative standard deviation of 0.74\%. Sample 14 clearly predicts the lowest of all volumes.
+
+It is worth nothing that the model predicts ice thicknesses below zero for certain points. These have however been rounded to zero as a thickness below zero makes no physical sense.
+
+The average score is 0.402 with a high 25.1\% relative standard deviation. Clearly this is due to the score dropping for sub-samples 5, 14 and 19. For most sub-samples the score is in fact above 0.4 but for those three it drops even below 0.2. Sub-sample 14 then leads to the lowest volume and a low score compared to the average. 
+
+
+\subsection{Features Importance}  
+
+\begin{figure}[!tp]
+	\centering		  
+	\includegraphics[width=1.\textwidth]{figures/LR_thick_map.pdf}
+	\caption{Linear Regression: Ice thickness distribution for two glaciers on top of the terrain slope angle. On the left one of the glaciers used for training the model. On the one of the glaciers outside those used for training the model.}
+	\label{fig:lr-map}
+\end{figure}
+
+\begin{table}
+	\centering
+	\caption{Linear Regressions: Coefficients for the linear regression model: higher absolute values mean that the feature have a higher influence on the model predictions}
+	\begin{tabular}{|c|c|c|c|}
+		\hline 
+		Slope&Mass Balance&Distance From Border&Altitude \\
+		\hline
+		-19.7&12.7&7.7&-6.6 \\
+		\hline
+	\end{tabular}
+\label{tb:lr-coef}
+\end{table}
+
+It is interesting to look into which of the variables used to train the model influence the outcome of the prediction the most.
+A very easy way to do so for a linear regression model is just to analyze the weights $\bm{\beta}$ (see Eq. \ref{eq:linear}) which the model assigned to each feature in order to make predictions. These are shown in Table \ref{tb:lr-coef}.
+The higher the absolute values of the coefficients, the more the variable will influence the outcome of the model. In this case the slope is the feature which is more relevant to the outcome of the model followed by the linear mass balance. In particular the slope is influences the prediction almost 3 times more than the altitude and over 2.5 times more than the distance from the border. This means that a doubling of the slope angle of the glacier surface will result in an ice thickness change 3 times larger than the change that would occur in a doubling of the altitude. \todo{Talk about sign of slope angle; reference equation from book}
+
 
 \begin{itemize}
 	\item[(1)] Score plots
