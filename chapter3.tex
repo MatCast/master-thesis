@@ -106,51 +106,83 @@ In Fig. \ref{fig:rfr-map} the ice thickness distribution predicted by the model 
 
 The total volume for the alps computed with the random forest regression model is $9.96 \times 10^{10}m^3$ which is 22.1\% lower than the volume predicted by \citet{Farinotti2019}. The glacier with the highest volume prediction is RGI60-11.00746 in accordance with \citet{Farinotti2019}.
 
-\subsection{Features Importance}  
+\subsection{Features Importance}\label{rfr-features}
 
-It is interesting to look into which of the variables used to train the model influence the outcome of the prediction the most.
+As for the linear regression model, random forest regression allows for a direct way of computing how influential is each feature in making the prediction once the model is trained. This is computed as the total decrease in node variance (see section \ref{random-forest}) (weighted by the proportion of samples reaching the node) averaged over all trees of the ensemble. This is a very convenient way of determining the importance of the features (and it is calculated by default by the scikit learn, the python package used for computing all the machine learning models presented in this thesis) but it has been found biased in some cases \cite{RandomFBias2007}. For this reason performing a permutation importance test on the model can help to confirm the results from default feature importance values. 
 
-A very easy way to do so for a linear regression model is just to analyze the weights $\bm{\beta}$ (see Eq. \ref{eq:linear}) which the model assigned to each feature in order to make predictions. These are shown in Table \ref{tb:lr-coef}.
-The higher the absolute values of the coefficients, the more the variable will influence the outcome of the model. In this case the slope is the feature which is more relevant to the outcome of the model followed by the linear mass balance. In particular the slope is influences the prediction almost 3 times more than the altitude and over 2.5 times more than the distance from the border. This means that a doubling of the slope angle of the glacier surface will result in an ice thickness change 3 times larger than the change that would occur in a doubling of the altitude. It is worth noting that the slope angle has a negative sign meaning that lower slope angles correspond to higher ice thicknesses. This is in accordance with the literature about glacier ice flow \cite[P. 286]{cuffey2010physics}.
-
-The analysis about the coefficients could be enough for the linear model to have get a complete picture about the variables influencing the output the most. An analysis showing the tools used for the other models is shown anyway in order to have comparable results and to compare how these tools compare with the method of analyzing the magnitude of the linear model coefficients. 
-
-Figure \ref{fig:rfr-heatmap} shows the coefficients deriving from the permutation analysis explained in section \ref{permutation}. Basically it looks on how the score of the model changes if the feature values for a single feature are swapped around randomly. If the score doesn't change compared to the one achieved by the model with the correct order of the features values it would mean that the feature is less relevant in making predictions. The higher the permutation coefficient value the more relevant is the feature in making predictions. Figure \ref{fig:lr-heatmap} shows that using this method the slope angle is the feature which most influences the outcome of the prediction which is in accordance with the values of the model coefficients in table \ref{tb:lr-coef}. Also for the other features the permutation shows the same result already found with the model coefficients. Interestingly for sub-sample 5, 14 and 19 there is a significant drop in the permutation coefficient for all features. These were also the sub samples with the lowest score registered in the score analysis for the linear regression model.
+Figure \ref{fig:rfr-heatmap} shows the coefficients deriving from the permutation analysis (section \ref{permutation}) on the left and the feature importance as calculated when training the random forest regression. All of them are calculated using the models trained with the different training samples already used for the score analysis. The feature importance heatmap on the right predicts the slope angle to be the most important of the features. In fact it predicts it to be on average 1.6 times more important than the mass balance to make the prediction. Altitude and distance from the border seem to be of almost no relevance in making the prediction according to this heatmap. The last holds true also when looking at the heatmap on the left showing the permutation importance for the features. However using this tool instead of the default feature importance value, the mass balance comes out as the feature influencing the score the most. The difference in permuting the slope angle or the mass balance isn't as pronounced as for the feature importance case however. The values for the permutation importance of mass balance and slope angle are in fact very similar.
 
 \begin{figure}[!tp]
 	\centering		  
-	\includegraphics[width=1.\textwidth]{figures/LR_heatmap.pdf}
-	\caption{Linear Regression permutation coefficients heatmap: each row in the figure represents a sub-sample of the data used for training the algorithm. Each column represents the permutation coefficient value for the considered feature.}
+	\includegraphics[width=1.\textwidth]{figures/RFR_heatmap.pdf}
+	\caption{Random Forest Regression feature importance heatmaps: On the left the permutation coefficient; on the right the Feature importance. Each row in the figure represents a sub-sample of the data used for training the algorithm. Each column represents respectively the permutation coefficient(left) or the feature importance(right) value for the considered feature.}
 	\label{fig:rfr-heatmap}
 \end{figure}
 
-Finally Fig. \ref{fig:rfr-pdp} shows the change in thickness value for changes in values of the features. Features are scaled according to Eq. \ref{eq:scale} hence the values on the x-axis of the figure do not represent the original input values but the scaled ones used to train the model. If the features weren't scaled it would be impossible to show a chart like this given that features could have very different ranges and scales (for example altitudes ranging between  $2000m$ and almost $5000m$ compared to slope angles ranging from $0$ to $\frac{\pi}{4}$). It shows the same results as both the linear coefficient magnitude in table \ref{tb:lr-coef} and the permutation importance. In particular each line represents ice thickness changes when all other variables are kept constant. This provides for a visual comparison between the influence which each feature have on the prediction. For the linear regression case each line is a of course a straight line but this will not be the case for the other models.
-
+Fig. \ref{fig:rfr-pdp} shows the change in thickness value for changes in values of the features. Once again, feature values are scaled according to Eq. \ref{eq:scale}. Immediately one sees that the change in ice thickness is not linearly dependent on the change in features. All the lines don't look continuous and present clear steps marking the change in ice thickness. This is partly due to the possible abrupt change in feature value but it is mostly a natural effect of the clear splits happening in the node of a decision tree.  The mass balance has a change in its slope going from increasing to decreasing around 0 and then increasing again around 1.8. The slope line has a sudden pick and changes from decreasing to increasing just below 0. The altitude also is slightly non monotonic between -1 and 0 while the border distance is always monotone. 
 \begin{figure}[!tp]
 	\centering		  
-	\includegraphics[width=1.\textwidth]{figures/LR_pdp.pdf}
-	\caption{Linear Regression partial dependence plots: representation of the change in Ice Thickness compared to the change in the value of the features. Features values are scaled according to Eq. \ref{eq:scale}}
+	\includegraphics[width=1.\textwidth]{figures/RFR_pdp.pdf}
+	\caption{Random Forest Regression partial dependence plots: representation of the change in Ice Thickness compared to the change in the value of the features. Features values are scaled according to Eq. \ref{eq:scale}}
 	\label{fig:rfr-pdp}
 \end{figure}
 
-\begin{itemize}
-	\item[(1)] Score plots
-	\item[(2)] Volume spread plots
-	\item[(3)] Glacier maps
-	\item[(4)] Features importance
-	\item[(5)] Volume for the whole alps
-\end{itemize}
+Fig. \ref{fig:rfr-pdp} also is in accordance with the feature importance analysis showed in the heatmaps of Fig. \ref{fig:rfr-heatmap} as the altitude and border distance seem to lead to very small changes in the ice thickness prediction. Looking at the partial dependence plots it also seems like the slope leads to a change in ice thickness up until the scaled value 0 (around 18$\deg$ angle). After this value the ice thickness prediction doesn't change and the maximum range of it is $40m$. For the mass balance instead there seem to be a change in ice thickness prediction throughout the whole range of its values even though the highest changes happen in the values below 0 and for higher values the curve almost completely flattens. Its range in changes in ice thickness is almost $60m$ which is quite higher than the changes for the slope angle.
 
 
-\section{SVM}\label{svm}
-Results from the SVM
-\begin{itemize}
-	\item[(1)] Score plots
-	\item[(2)] Volume spread plots
-	\item[(3)] Glacier maps
-	\item[(4)] Features importance
-	\item[(5)] Volume for the whole alps
-\end{itemize}
+\section{Support Vector Regression}\label{svr}
+The same process of using different sub-samples for training the algorithm and testing its performance used in the linear regression case has been used for the random forest algorithm. This is particularly important for random forests because they are very prone to overfitting. Especially the parameters determining the maximum tree depth and the one determining the minimum number of samples required to split the tree are those which had to be carefully adjusted in order to maintain a good balance between the model performances and its inability to generalize for samples not used for training it. After some analyze the maximum tree depth parameter has been tuned so that all the nodes would be expanded until all leaves would be left pure or until the minimum sample necessary for the tree to split would be reached. The minimum sample required for the tree to split has been set to 5\% of the number of samples present in the training data-set.  
+
+\subsection{Score and volume spread}\label{rfr-score}
+
+\begin{figure}[!tp]
+	\centering		  
+	\includegraphics[width=1.\textwidth]{figures/LR_score.pdf}
+	\caption{Random Forest Regression: Volume and score values of the model after training it with 20 different sub-sample of data. On the x-axis each number identifies a different sample of data. On the left the total volume of the alpine glaciers present in the GlaThiDa. On the right the $R^2$ coefficient for values left out of the training sample.}
+	\label{fig:rfr-score}
+\end{figure}
+
+Figure \ref{fig:rfr-score} shows the volume and score change for 20 different sub-samples used for training the linear regression algorithm. 
+
+It must be reminded that as the name of the algorithm suggests a part of its training process is random due to the random processes present in the algorithm (see section \ref{random-forest}). This means that training the model again could produce slightly different results then the ones shown in \ref{fig:rfr-score}.
+Clearly the score is really dependent on the sample used for training. This could mean that the model has been overfitted but it's also a common characteristic of random forest algorithms \cite{RandomForest2018}. For some samples the score is around 0.6 but it gets as low as almost 0 for sample 12. As for the linear regression case low scores are registered for samples 5, 14 and 19 but also for samples 8, and 12. 
+
+
+\begin{figure}[!tp]
+	\centering		  
+	\includegraphics[width=1.\textwidth]{figures/RFR_thick_map.pdf}
+	\caption{Random Forest Regression: Ice thickness distribution for two glaciers on top of the terrain slope angle. On the left one of the glaciers used for training the model. On the right one of the glaciers outside those used for training the model.}
+	\label{fig:rfr-map}
+\end{figure}
+
+Contrary to the score values the volume spread is not that high. The model might fail to correctly predict specific ice thickness and its score is influenced by the sample chosen for training values. This does not however seems to influence the total volume predicted for the glaciers for which this volume has been computed.
+
+In Fig. \ref{fig:rfr-map} the ice thickness distribution predicted by the model for two different glaciers is shown. The ice thickness distribution seems to be distributed in a rather discontinuous way with large areas of the glaciers having relatively high but almost constant ice thickness values. 
+
+The total volume for the alps computed with the random forest regression model is $9.96 \times 10^{10}m^3$ which is 22.1\% lower than the volume predicted by \citet{Farinotti2019}. The glacier with the highest volume prediction is RGI60-11.00746 in accordance with \citet{Farinotti2019}.
+
+\subsection{Features Importance}\label{rfr-features}
+
+As for the linear regression model, random forest regression allows for a direct way of computing how influential is each feature in making the prediction once the model is trained. This is computed as the total decrease in node variance (see section \ref{random-forest}) (weighted by the proportion of samples reaching the node) averaged over all trees of the ensemble. This is a very convenient way of determining the importance of the features (and it is calculated by default by the scikit learn, the python package used for computing all the machine learning models presented in this thesis) but it has been found biased in some cases \cite{RandomFBias2007}. For this reason performing a permutation importance test on the model can help to confirm the results from default feature importance values. 
+
+Figure \ref{fig:rfr-heatmap} shows the coefficients deriving from the permutation analysis (section \ref{permutation}) on the left and the feature importance as calculated when training the random forest regression. All of them are calculated using the models trained with the different training samples already used for the score analysis. The feature importance heatmap on the right predicts the slope angle to be the most important of the features. In fact it predicts it to be on average 1.6 times more important than the mass balance to make the prediction. Altitude and distance from the border seem to be of almost no relevance in making the prediction according to this heatmap. The last holds true also when looking at the heatmap on the left showing the permutation importance for the features. However using this tool instead of the default feature importance value, the mass balance comes out as the feature influencing the score the most. The difference in permuting the slope angle or the mass balance isn't as pronounced as for the feature importance case however. The values for the permutation importance of mass balance and slope angle are in fact very similar.
+
+\begin{figure}[!tp]
+	\centering		  
+	\includegraphics[width=1.\textwidth]{figures/RFR_heatmap.pdf}
+	\caption{Random Forest Regression feature importance heatmaps: On the left the permutation coefficient; on the right the Feature importance. Each row in the figure represents a sub-sample of the data used for training the algorithm. Each column represents respectively the permutation coefficient(left) or the feature importance(right) value for the considered feature.}
+	\label{fig:rfr-heatmap}
+\end{figure}
+
+Fig. \ref{fig:rfr-pdp} shows the change in thickness value for changes in values of the features. Once again, feature values are scaled according to Eq. \ref{eq:scale}. Immediately one sees that the change in ice thickness is not linearly dependent on the change in features. All the lines don't look continuous and present clear steps marking the change in ice thickness. This is partly due to the possible abrupt change in feature value but it is mostly a natural effect of the clear splits happening in the node of a decision tree.  The mass balance has a change in its slope going from increasing to decreasing around 0 and then increasing again around 1.8. The slope line has a sudden pick and changes from decreasing to increasing just below 0. The altitude also is slightly non monotonic between -1 and 0 while the border distance is always monotone. 
+\begin{figure}[!tp]
+	\centering		  
+	\includegraphics[width=1.\textwidth]{figures/RFR_pdp.pdf}
+	\caption{Random Forest Regression partial dependence plots: representation of the change in Ice Thickness compared to the change in the value of the features. Features values are scaled according to Eq. \ref{eq:scale}}
+	\label{fig:rfr-pdp}
+\end{figure}
+
+Fig. \ref{fig:rfr-pdp} also is in accordance with the feature importance analysis showed in the heatmaps of Fig. \ref{fig:rfr-heatmap} as the altitude and border distance seem to lead to very small changes in the ice thickness prediction. Looking at the partial dependence plots it also seems like the slope leads to a change in ice thickness up until the scaled value 0 (around 18$\deg$ angle). After this value the ice thickness prediction doesn't change and the maximum range of it is $40m$. For the mass balance instead there seem to be a change in ice thickness prediction throughout the whole range of its values even though the highest changes happen in the values below 0 and for higher values the curve almost completely flattens. Its range in changes in ice thickness is almost $60m$ which is quite higher than the changes for the slope angle.
 
 
 % ==== SECTION 1 ===============================================================
@@ -225,12 +257,12 @@ Results from the SVM
 %\end{figure}
 %
 %
-This template uses the \texttt{subfigure} environment with the option
-\texttt{FIGTOPCAP} to place the subfigure labels (\subref{fig:1a}) and
-(\subref{fig:1b}) at the top of the figure. However, since we want to have the
-caption at the bottom of figure, use \verb|\figuretopcapfalse|
-before the first \verb|\subfigure| command within the \texttt{figure}
-environment, otherwise the figure number produced by \verb|\ref| is wrong.
+%This template uses the \texttt{subfigure} environment with the option
+%\texttt{FIGTOPCAP} to place the subfigure labels (\subref{fig:1a}) and
+%(\subref{fig:1b}) at the top of the figure. However, since we want to have the
+%caption at the bottom of figure, use \verb|\figuretopcapfalse|
+%before the first \verb|\subfigure| command within the \texttt{figure}
+%environment, otherwise the figure number produced by \verb|\ref| is wrong.
 %
 %
 %\section{Table}
