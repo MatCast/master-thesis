@@ -1,7 +1,28 @@
 \chapter{Discussion}\label{disc}
 \thispagestyle{plain}
+In this chapter a deeper analysis of the results from chapter \ref{chap3} are presented in order to try to understand the behavior of the models and compare their performances. A comparison of the results obtained with the models used in this thesis to the model presented by \cite{Farinotti2019} will also be presented as it is interesting to compare statistical based models as those deriving from machine learning algorithm to the physical based ones from  \cite{Farinotti2019}.
 
-\section{Machine Learning models comparison}\label{MLcomp}
+\section{Machine learning models performances}\label{MLcomp}
+
+One of the easiest approaches to infer the reliability of a model is to check how good is the model at predicting known values. When doing this for a model coming from a machine learning algorithm one needs to be careful at not over-fitting the model, i.e. having a model which is very good at making predictions for data points coming from the data used for training the model but very bad at predicting values for data not used for training. For this reason the models have all been trained using 20 different sub-samples and checking the how good they were doing when making predictions using data left out from the sub-samples used for training.
+None of the three models used seem to do a very good job at predicting the ice thickness based on their scores. In the best case in fact the support vector regression had an average score of 0.55 but with a high variance due to sub-samples 5, 14 and 19 having a much lower score. Even the best performing of the trained models which still was one of the support vector regression models trained only had a score just above 0.6. This means that the best model only explain 60\% of the variance of the thickness observations fro the GlaThiDa database.
+
+\begin{figure}[!tp]
+	\centering		  
+	\includegraphics[width=1.\textwidth]{figures/SVR_score_tr.pdf}
+	\caption{Support Vector Regression: on the left score achieved by the models trained with the different sub-samples calculated using the training sample instead if the testing sample; on the right the score computed on the whole sub-sample (train and testing data)}
+	\label{fig:train-score}
+\end{figure}
+
+Interestingly all the models have drop in performance for the sub-samples  5, 14 and 19. A possible explanation of this behavior could be explained by the fact that the sub-sample used for training these models could be missing some data points in the training set which were essential for training a model leading to accurate predictions. If for example those sub-sample had a very different value distribution in any of the attributes used for training compared to the distribution of the whole data-set, it could lead to a biased model not capable of making accurate predictions. This, however difficult to compute exactly, doesn't seem to be the case when looking at Fig. \ref{fig:distribution} showing box-plots of the data distribution for each of the attributes and sample.
+Fig. \ref{fig:train-score} shows the score achieved by the support vector machine by the models trained with the different sub-samples. On the right the score was calculated only on the sample used for training in each sub-sample. This in contrast with the results shown in chapter \ref{chap3} which showed the score computed on the data not used for training in each sub-sample. The left chart shows how the highest scores are achieved for sub-samples 5, 14, and 19. Those are the same sub-samples which were showing the lowest scores when computing the score on the testing samples. On the right we can see the scores computed on the whole data-set. The scores are almost constant throughout the sub-samples. All this could be indicating that the reason for the drop in scores showed in chapter \ref{chap3} could be attributed to the fact that the samples left out for testing are particularly difficult to compute for the model. Similar results can be shown also for the linear regression model and for the random forest regression.
+
+\begin{figure}[!tp]
+	\centering		  
+	\includegraphics[width=1.\textwidth]{figures/samples_distribution.pdf}
+	\caption{Distribution of the attributes used for training the models along the different sub-samples}
+	\label{fig:distribution}
+\end{figure}
 
 \subsection{Score comparison}
 How well do the models predict values in the test dataset and how do the models compare with each other.
