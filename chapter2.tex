@@ -318,7 +318,7 @@ The distance from the border should be proportional to the ice thickness, as in 
 
 The slope angle determines the steepness of the topography and is proportional to the ice flux velocity.
 
-The linear mass balance is a constant mass balance as a linear function of altitude. It assumes that the altitude integrated mass balance over the whole glacier is zero. Grid points with higher positive values are assumed to be points of accumulation hence possible points of deeper ice thickness.
+The linear mass balance is a constant mass balance as a linear function of altitude. It assumes that the altitude integrated mass balance over the whole glacier is zero. The point-wise linear mass balance, then is computed as the sum of the mass balance of the grid-cell itself plus the sum of the mass balance of all the grid-cells above it. 
   
 \subsection{Putting together the features}
 As mentioned GlaThiDa comes with no information about the glaciers aside for the ice thickness observations. In order to get the input data mentioned in the previous section, the OGGM model has been used. This is an open source python based model for modeling glaciers around the globe. The main way it has been used for this thesis was to download and put together the digital elevation models, smooth them if needed and project them to create a map of the glaciers using RGI for the glaciers outlines. The features where then computed from OGGM using basic geometrical formulas. 
