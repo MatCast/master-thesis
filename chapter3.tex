@@ -32,6 +32,7 @@ The volume shown on the left side of Figure \ref{fig:lr-score} has been computed
 It is worth nothing that the model predicts ice thicknesses below zero for certain points. These have however been rounded to zero as a thickness below zero makes no physical sense.
 
 The average score is 0.402 with a high 25.1\% relative standard deviation. Clearly this is due to the score dropping for sub-samples 5, 14 and 19. For most sub-samples the score is in fact above 0.4 but for those three it drops even below 0.2. Sub-sample 14 then leads to the lowest volume and a low score compared to the average.
+The linear regression model trained with all the data in the data-set has score of 0.32 which  is the lowest among the three models used.
 
 The total volume for the alps computed with the linear model is $1.40 \times 10^{11}m^3$ which is 9.8\% larger than the volume predicted by \citet{Farinotti2019}. Notably the glacier RGI60-11.00746 is the one with the highest volume according to \citet{Farinotti2019} but  the trained linear model predicts instead glacier RGI60-11.00106 to be the largest one by volume with RGI60-11.00746 being the 11th largest glacier according to the linear model.
 
@@ -91,6 +92,7 @@ Figure \ref{fig:rfr-score} shows the volume and score change for 20 different su
 
 It must be reminded that as the name of the algorithm suggests a part of its training process is random due to the random processes present in the algorithm (see section \ref{random-forest}). This means that training the model again could produce slightly different results then the ones shown in \ref{fig:rfr-score}.
 Clearly the score is really dependent on the sample used for training. This could mean that the model has been overfitted but it's also a common characteristic of random forest algorithms \cite{RandomForest2018}. For some samples the score is around 0.6 but it gets as low as almost 0 for sample 12. As for the linear regression case low scores are registered for samples 5, 14 and 19 but also for samples 8, and 12. 
+Th model trained with all the data available from GlaThiDa reached a score 0.57 which is the highest of all the models tested.
 
 
 \begin{figure}[!tp]
@@ -145,6 +147,7 @@ Support Vector Regression is the last model for which the results are presented 
 Fig. \ref{svr-score} shows on the left the volume spread for the alpine glaciers with ice thickness observations, and on the right the score of the model as defined in \ref{eq:score}. Each of the different values represent a model trained with a different sub-sample of data, the same sub-samples already used for the linear regression and random forest regression analysis.
 
 The score shows a very similar pattern compared to the one shown from the linear regression model (see Fig. \ref{fig:lr-score}). Samples 5, 14 and 19 present a drop in the score achieved exactly as already shown for the linear regression. The average score however is higher reaching 0.55 on average and it is around 0.6 for most of the sub-samples used for training the model.
+The value of the score for the model trained with all the data available from GlaThiDa is 0.45 which means that less than 50\% of the ice thickness variance is explained by the model. 
 
 The volume spread on the left of the figure shows a dispersion around 1.15 and an average total volume of $1.53 \times 10^{10}m^3$. This is the lowest of all the models considered so far. 
 Looking at Fig. \ref{fig:svr-map}, the ice thickness distribution for the glacier RGI60-11.01450 immediately looks strange. The ice thickness for most of the glacier seem to be in the order of 75$m$ with much higher values only reached in the very bottom part of it. It seems like the model is actually predicting a constant ice thickness for most of the glacier. This is of course not a desirable result as ice thicknesses are presumed to change throughout the surface of the glacier. The same behavior is not visible in the left glacier which shows different ice thicknesses uniformly distributed all over the glacier surface.
