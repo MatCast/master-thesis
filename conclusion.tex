@@ -1,6 +1,20 @@
 \chapter{Conclusions}\label{concl}
 \thispagestyle{plain}
 
+In this thesis machine learning algorithm have been used to create models aimed at predicting glaciers ice thickness.
+
+In order to do so the GlaThiDa, a database with thickness observations of glaciers all over the world has been linked to the RGI, a database of glaciers outlines which include over 215.000 glaciers which should include all glaciers and ice caps in the globe. Of all the observations in GlaThiDa 96.6\% have been found to part of one of the glaciers in the RGI representing a total of 771 glaciers worldwide. Many of these glaciers only present few observations per squared kilometer and some regions don't have glaciers with observations entries at all.
+
+In order to create a data set of input data to train the machine learning models the Open Global Glacier Model has been used. This model provided the tools to merge together the relevant digital elevation models for each glacier and compute gridded geometrical feature such as: the topography, the distance from the border of the glacier, the slope angle and the altitude base mass balance.
+
+\begin{itemize}
+	\item link glathida rgi
+	\item generate attributes using oggm
+	\item train the models with sub-samples
+	\item analyze feature importance
+	\item alpine volume
+\end{itemize}
+
 %This chapter contains consequences that derive from your results. It may also
 %contain speculations. It may provide suggestions for future studies. Hence, the
 %conclusions may provide an outlook and list open questions. Sometimes
