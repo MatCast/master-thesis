@@ -39,11 +39,18 @@ Since then many more approaches have emerged taking for example the mass conserv
 
 Since then many more global scale glacier models able to predict ice thickness distribution have been released and together with them the GlaThiDa database was compiled. This led to the first Ice Thickness Models Intercomparison eXperiment (ITMIX) \cite{Farinotti2017}, which is the first attempt of putting together all those models and asses their accuracy on the base of known ice thickness observations available in the GlaThiDa data base as well as comparing the model performances with each other. 
 
-The experiment focused on 17 glacier models able to predict at glacier ice thickness on a global scale. The task was to model at least part of 15 glaciers, 3 ice caps and 3 synthetically grown glaciers. The output of the models was compared with data available from the GlaThiDa and between each other. A composite solution of the all the assailable models achieved a local ice thickness difference of the order of $10 \pm 24\%$ of the mean ice thickness. In general the spread of all the  models often exceeded the local ice thickness concluding that an ensemble approach could mitigate errors and would reduce the random nature of a single model output.
+The experiment focused on 17 glacier models able to predict at glacier ice thickness on a global scale. The task was to model at least part of 15 glaciers, 3 ice caps and 3 synthetically grown glaciers. The output of the models was compared with data available from the GlaThiDa and between each other. A composite solution of the all the assailable models achieved a local ice thickness difference of the order of $10 \pm 24\%$ of the mean ice thickness. In general the spread of all the  models often exceeded the local ice thickness concluding that an ensemble approach could mitigate errors and would reduce the random nature of a single model output. A 3rd ITMIX \cite{Farinotti2019} has been elaborated using 5 of the models form the first ITMIX to create an ensemble model for better predicting ice thickness distributions of all glaciers in the world.  
 
 The models were divided into categories depending on the different approaches used to model the ice thickness. The categories are (1) those taking ice thickness inversion approaches as a minimization problem, (2) those based on mass conservation,  (3) approaches depending on a basal shear stress parametrization, (4) approaches based on surface velocities and (5) other approaches. 15 of the 17 explored models in the ITMIX, belonged to the first 4 categories, which are all categories for methods relaying on physical assumptions to numerically model the some of the physical processes happening in a glacier and predict the ice thickness. Only 2 models, belonging to category (5) are models not based on physical assumptions and methods but rather on statistical methods. Of those 2 the one from \citet{Clarke2009} is based on artificial neural networks, a branch of machine learning, and uses the input data from an artificially grown glaciers to make predictions about glaciers thickness learning from the input data of this glacier.
 
-Machine learning is a   
+Machine learning is a branch of computer science which uses different algorithms to give a computer the ability to learn from a set of samples. The concept was of artificial intelligence, which is the super field of machine learning, was first proposed by \citet{Turing1950}. Machine learning algorithm which are still used today however were already available before Turing's formulation. The basics principle behind all of the is to allow a computer program to generate a model capable of solving a task, without explicit instructions on how to solve the problem. In the case of the glacier thickness it would mean to give the algorithm a data sample and have the algorithm be able to predict ice thickness by learning from the data-sample. 
+There are many different machine learning algorithm which have been developed since 1950 and, as mentioned, some which have been developed even before.
+
+Although the algorithms have been around for a long period of time they only saw a wide spread and application starting from the late 1990 as computation power and resources largely improved. Since then however the field has had a huge development and many of its application have become part of our day to day life. Things such as voice recognition, chat bots, autonomous driving and online products suggestions are all a product of machine learning algorithm being developed and trained to solve this specific problems.
+
+As mentioned above however machine learning has yet to make a big impact in the glaciological community and most of the models used in the experiment, and the ones which achieved the better accuracy, are physical based model. The model from \citet{Clarke2009} which uses artificial neural networks to predict the glacier ice thickness is has not been trained on real glacier data but rather on artificial generated ones; at the time of publication the GalThiDa had not yet been compiled and there were not enough ice thickness observations available to train a model from real glacier data.
+
+The availability of ice thickness observations, the excitement behind machine learning in almost every possible field, and the lack of previous work done in this sense by the glaciological modeling community is what drives the motivation behind this thesis.
 %Based on the literature survey, the writer draws a picture of the existing
 %knowledge in a specific field and points to open questions. Hence, after this
 %survey the Introduction will ultimately culminate in the formulation of specific
@@ -79,25 +86,25 @@ Machine learning is a
 %online document: The AMS provides a guideline for preparing citations and
 %references \citep{ams-09Aag}.
 
-Background of the literature: GlaThiDa, ITMIX (\citet{Farinotti2017}), etc 
-
 
 % ==== SECTION 3 ===============================================================
 \section{Goals and Outline}\label{goals}
+In this thesis three different machine learning algorithms have been chosen to  create models able to predict glacier ice thickness. The algorithms have all been trained on the same data-set the GlaThiDa which contains ice thickness observations for glaciers worldwide.
 
-%After the literature survey the Introduction will ultimately culminate in the
-%formulation of specific scientific questions, aims or \emph{goals}. Hence, near
-%the end of the Introduction there will often appear sentences like:\\[1ex]
-%\dots The goal of the investigation thus became trying to find out if \dots\\
-%\dots For this reason it appeared reasonable to attempt \dots\\
-%\dots It therefore became necessary to clarify whether \dots\\ 
-%
-%Instead of describing the goals in one paragraph, you may want to structure them
-%with the \verb|itemize| command:
+To train the algorithm a set of attributes (features), mainly geometrical, have been generated using the Open Global Glacier Model (OGGM) \cite{OGGM2019}. This attributes are all computable by the only mean of a digital elevation model for the considered glacier considered and the outline of the glacier given by the RGI.
+
+The accuracy of the models have been estimated comparing their predictions with the observations from the GlaThiDa as well as with themselves.
+
+An analysis of the most influential attributes in making predictions has been carried out.
+
+Finally the obtained models have been used to predict the volume of all the alpine glaciers and compare their results with those of the 3rd ITMIX \cite{Farinotti2019}.
+
+
+This thesis then tries to establish:
 \begin{itemize}
-\item[(1)] How well can Machine Learning Algorithm predict glaciers ice thickness.
-\item[(2)] How do 3 different machine learning algorithm compare with each other in estimating glaciers ice thickness.
-\item[(3)] If we use those algorithm to estimate the total volume of glaciers in the alps, how do these model compare to some of the physical based ones for this region.
+\item[(1)] How accurate are machine learning algorithm at predicting glaciers ice thickness.
+\item[(2)] How 3 different machine learning algorithm compare with each other in estimating glaciers ice thickness.
+\item[(3)] Using those algorithm to estimate the total volume of glaciers in the alps, how these models compare to the model from the \cite{Farinotti2019} elaborated in the 3rd ITMIX.
 \end{itemize}
 
 %The so-called SMART
