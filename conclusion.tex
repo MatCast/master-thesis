@@ -7,6 +7,13 @@ In order to do so the GlaThiDa, a database with thickness observations of glacie
 
 In order to create a data set of input data to train the machine learning models the Open Global Glacier Model has been used. This model provided the tools to merge together the relevant digital elevation models for each glacier and compute gridded geometrical feature such as: the topography, the distance from the border of the glacier, the slope angle and the altitude base mass balance.
 
+With this data 3 different machine learning models, linear regression, random forest regression and support vector regression, have been trained using only observations available for the alpine region. To avoid overfitting the models and to better be able to asses the performances of each model the each model has been trained with 20 different sub-samples each containing 75\% of data points available. The $R^2$ coefficient, also called score, calculated over the resulting 25\% of the data, has been chosen as a value to asses the performances of each model. The best performing model on average was the support vector regression with an average $R^2 = 0.55$. The score spread between the models trained with the different sub-samples has been found particularly high with much lower scores for some specific sub-samples. This is true for the three different machine learning algorithm used as all of them showed drops in score for samples 5, 14 and 19. This behavior seems explainable by the fact that the sub-sample left out for training in these 3 cases was particularly hard to predict.
+The model achieving the highest score when training them over the whole sample has been the random forest regression with a score of 0.57.
+
+After the models have been trained the relevance of each feature used for training when making a prediction has been analyzed. For the three models the mass balance and the slope angle have emerged as the most determining features for making predictions. The mass balance was the most relevant feature for both the random forest and support vector regression but for the linear regression it was the slope angle.
+
+The predictions made by the models have then been extended for all the glaciers in the alps to compute their volumes. This result has been compared to the one obtained by \citet{Farinotti2019} in the 3rd ITMIX.
+
 \begin{itemize}
 	\item link glathida rgi
 	\item generate attributes using oggm
