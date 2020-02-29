@@ -35,11 +35,17 @@ The glacier Thickness Database (\citet{GlaThiDa2014}) is a set of data which att
 %equations implemented in a numerical model.
 
 \subsection{RGI}
-The Randolph Glacier Inventory (RGI) (\citet{RGI2014}) is a global database of outlines of glaciers, excluding ice sheets. The inventory has been compiled from satellite imagery collected from 1999 onward. Most of the outlines don't express a specific picture in time of the glacier but are a compound of different images of each glacier due to images obstructions such as cloud covers or satellite orbits. The first version of this inventory was released in 2012 and the latest version, RGI Version 6.0 was released in 2017. In this latest release the database comprises more than 220,000 glacier outlines which are divided in 19 regions which cover all areas in the world with glaciers. This is the version used for all the analysis in this thesis. \todo{Add map of all the glaciers?}
+The Randolph Glacier Inventory (RGI) (\citet{RGI2014}) is a global database of outlines of glaciers, excluding ice sheets. The inventory has been compiled from satellite imagery collected from 1999 onward. Most of the outlines don't express a specific picture in time of the glacier but are a compound of different images of each glacier due to images obstructions such as cloud covers or satellite orbits. The first version of this inventory was released in 2012 and the latest version, RGI Version 6.0 was released in 2017. In this latest release the database comprises more than 220,000 glacier outlines which are divided in 19 regions which cover all areas in the world with glaciers. This is the version used for all the analysis in this thesis. 
+
 
 \subsection{Linking GlaThiDa and RGI}\label{GlaRGI}
 The GlaThiDa comes with a table containing the thickness measurements observations. This table comes with the thickness value of the observation, its latitude and longitude, and other variables such as the date of the observation, the name of the glacier, the thickness uncertainty and others. Aside from the measurements GPS coordinates and the thickness value, some fields like, the name of the glacier and the thickness uncertainty, are often left empty. This creates the problem of having to link each observation with a glacier in the RGI database. To do so a script has been created which determines whether an observation is located inside a glacier outline: the RGI database comes with closed outlines of the glaciers in geographic coordinates referenced to the WSG84 (also known as ESPG:4326) as shape-files. The python library \href{https://github.com/Toblerity/Shapely}{shapely} has been used to transform the observation Latitude and Longitude to the WSG84 projection system and to check whether each of these point was lying inside the glacier outlines (including the boundaries of the outline).
-\todo{Add graphic of a glacier with the thickness points. I couldn't find a script with it so far.}
+
+\begin{figure}\label{fig:thickness-pt} 
+	\centering 
+	\includegraphics[width=1.0\textwidth]{./figures/glathida_thick_map.pdf}
+	\caption{Map of glacier RGI60-11.02773 with ice thickness observations after processing the glacier with OGGM: ice thickness observations are the average ice thickness for all observations inside a grid cell.}
+\end{figure}
 
 \subsection{Some statistics about GlaThiDa}
 After linking the two databases it is interesting to learn about some statistics of the GlaThiDa. In order to create these statistics The Open Global Glacier Model (OGGM) (\citet{OGGM2019}, \href{https://github.com/OGGM/oggm}{Open Source Code}) has been used to add a digital elevation model to the glaciers in the RGI with thickness entries in the GlaThiDa (see \ref{GlaRGI}).
