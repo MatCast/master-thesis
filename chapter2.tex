@@ -40,7 +40,7 @@ The Randolph Glacier Inventory (RGI) (\citet{RGI2014}) is a global database of o
 
 
 \subsection{Linking GlaThiDa and RGI}\label{GlaRGI}
-The GlaThiDa comes with a table containing the thickness measurements observations. This table comes with the thickness value of the observation, its latitude and longitude, and other variables such as the date of the observation, the name of the glacier, the thickness uncertainty and others. Aside from the measurements GPS coordinates and the thickness value, some fields like, the name of the glacier and the thickness uncertainty, are often left empty. This creates the problem of having to link each observation with a glacier in the RGI database. To do so a script has been created which determines whether an observation is located inside a glacier outline: the RGI database comes with closed outlines of the glaciers in geographic coordinates referenced to the WSG84 (also known as ESPG:4326) as shape-files. The python library \href{https://github.com/Toblerity/Shapely}{shapely} has been used to transform the observation Latitude and Longitude to the WSG84 projection system and to check whether each of these point was lying inside the glacier outlines (including the boundaries of the outline).
+The GlaThiDa comes with a table containing the thickness measurements observations. This table contains the thickness value of the observation, its latitude and longitude, and other variables such as the date of the observation, the name of the glacier, the thickness uncertainty and others. Aside for GPS coordinates and thickness value, some fields like, the name of the glacier and the thickness uncertainty, are often left empty. This creates the problem of having to link each observation with a glacier in the RGI database. To do so a script has been created which determines whether an observation is located inside a glacier outline: the RGI database comes with closed outlines of the glaciers in geographic coordinates referenced to the WSG84 (also known as ESPG:4326) as shape-files. The python library \href{https://github.com/Toblerity/Shapely}{shapely} has been used to transform the observations latitude and longitude to the WSG84 projection system, and to check whether each of these point was lying inside the glacier outlines (including the boundaries of the outline).
 
 \begin{figure}\label{fig:thickness-pt} 
 	\centering 
@@ -49,17 +49,17 @@ The GlaThiDa comes with a table containing the thickness measurements observatio
 \end{figure}
 
 \subsection{Some statistics about GlaThiDa}
-After linking the two databases it is interesting to learn about some statistics of the GlaThiDa. In order to create these statistics The Open Global Glacier Model (OGGM) (\citet{OGGM2019}, \href{https://github.com/OGGM/oggm}{Open Source Code}) has been used to add a digital elevation model to the glaciers in the RGI with thickness entries in the GlaThiDa (see \ref{GlaRGI}).
+After linking the two databases it is interesting to learn about some statistics of the GlaThiDa. In order to create these statistics the Open Global Glacier Model (OGGM) (\citet{OGGM2019}, \href{https://github.com/OGGM/oggm}{Open Source Code}) has been used to add a digital elevation model to the glaciers in the RGI with thickness entries in the GlaThiDa (see \ref{GlaRGI}).
 
 \subsubsection{Glaciers distribution and types}
-There are 820370 entries (thickness measurements) in the GlaThiDa version 2.1. After assigning each of them to one of the 215,547 RGI glaciers 771 of those glaciers have thickness observations associated with them. This is 0.36\% of all the glaciers in th RGI. Out of the 820370 initial entries 27882, 3.4\% resulted outside of any glacier outlines defined in the RGI. Some reason for this could be: a slightly wrong GPS coordinate collected in the GlaThiDa measurement; observations taken outside of the glacier by mistake or intentionally, to make sure that all the glacier was covered; a different shape of the glacier at the moment when the observation was taken, compared to the moment when the RGI was compiled; a wrong assessment of the glacier shape in the RGI.
-\begin{figure}\label{glathidamap} 
+There are 820370 entries (ice thickness observations) in the GlaThiDa version 2.1. After assigning each of them to one of the 215,547 RGI glaciers, 771 of those glaciers have resulted to have thickness observations associated with them. This is 0.36\% of all the glaciers in th RGI. Out of the 820370 initial entries 27882, 3.4\% of them, resulted outside of any glacier outlines defined in the RGI. Some reason for this could be: a slightly wrong GPS coordinate reported in the GlaThiDa, observations taken outside of the glacier by mistake or intentionally, to make sure that all the glacier was covered, a different shape of the glacier at the moment when the observation was taken, compared to the moment when the RGI was compiled, a wrong assessment of the glacier shape in the RGI.
+\begin{figure}[tp]\label{glathidamap} 
 	\centering 
-	\includegraphics[width=1.0\textwidth]{./figures/GlaThiDa_map.png}
+	\includegraphics[width=0.93\textwidth]{./figures/GlaThiDa_map.png}
 	\caption{Global map of the distribution of glaciers with thickness observations entries in the GlaThiDa database version 2.1. Black outlines are the RGI regions.}
 \end{figure}
 
-Most of the glaciers with thickness observation are in the Greenland Periphery region and in the Artic Canada North region. If we compare the glaciers with measurements with the number of glaciers present in each specific region though, we see that Arctic Canada North is the best represented region with around 5\% of the glaciers having at least one thickness measurement point. The region with most glaciers, Central Asia, has a very low number of glaciers represented in the GlaThiDa database. This is probably due to the difficulty in getting measurements for glaciers as such high altitudes at those present in the Himalaya.
+Most of the glaciers with thickness observation are in the Greenland Periphery region and in the Artic Canada North region (see Fig. \ref{fig:glareg}). If we compare the glaciers with measurements with the number of glaciers present in each specific region however, we see that Arctic Canada North is the best represented region with around 5\% of the glaciers having at least one thickness measurement point. The region with most glaciers in the RGI, Central Asia, has a very low number of glaciers represented in the GlaThiDa database. This is probably due to the difficulties encountered when trying to get measurements for glaciers at such high altitudes as those reached in the Himalaya.
 
 
 \begin{figure}[!tp]
@@ -73,14 +73,14 @@ More than two third of the RGI entities with GlaThiDa measurements are glaciers 
 
 \subsubsection{Measurements Distribution per Glacier}
 Not all the glaciers with measurements are perfectly covered over the whole glacier area. In fact around 42\% of the glaciers have less than 100 thickness observations. Given that some glaciers can extend for over $100 km^2$, it’s clear that some of them are very poorly covered.
-\begin{figure}[!tp]
+\begin{figure}[!bp]
 	\centering		  
 	\includegraphics[width=1.\textwidth]{figures/Observations_per_skm.pdf}
 	\caption{On the Left: distribution of glaciers with less than 100 observations per squared kilometer; there is a great number of glaciers with less than 20 thickness observations per squared kilometer. On the right: distribution of glaciers according to the percentage of their altitude bands covered.}
 	\label{fig:glaobs}
 \end{figure}
 
-More than 91\% of all the glaciers (represented in the figure above) have less than 100 thickness measurements per squared kilometer. Almost 44\% of all the glaciers with thickness observations have less than 5 observations per squared kilometer (see Fig. \ref{fig:glaobs}).
+More than 91\% of all the glaciers have less than 100 thickness measurements per squared kilometer (see Fig. \ref{fig:glaobs}). Almost 44\% of all the glaciers with thickness observations have less than 5 observations per squared kilometer.
 
 OGGM was used to generate a gridded map of each glacier represented in the GlaThiDa. With this map one can divide each glacier in $100m$ altitude bands to check how many of those bands contain at least one thickness measurement.
 Almost half of the glaciers have observations in at least half of the 100m altitude bands (see Fig. \ref{fig:glaobs}). Glaciers with few observations but well distributed over their length can be very useful for understanding glacier thickness patterns and for model validation.
