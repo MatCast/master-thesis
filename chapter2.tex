@@ -97,20 +97,20 @@ Most glacier models make in fact use of digital elevation models to setup the mo
 
 
 \section{Machine Learning Algorithms}\label{ML}
-Machine learning is a mathematical method which enables computers to perform a specific task without giving it the specific instructions on how to do it. This is achieved using algorithms to build a model from data usually called the ``training data''. This data are given to the algorithm which uses an iterative process to create the final model. 
+Machine learning is a mathematical method which enables computers to perform a specific task without giving it specific instructions about how to do it. This is achieved using algorithms which build a model from a sample of data usually called the ``training data''. The algorithm then uses these data in an iterative process to improve its performance at solving the requested task called the training process. After the iteration process is finished the model is trained and we can use it to solve our task. 
 
-The idea behind it is to emulate the learning process of a human-being in order to make predictions about new data. If for example one wanted to teach a kid how to recognize a cat, the simpler approach would be to show it cats or pictures of them, instead of trying to explain it what are the key attributes which characterize cats. In the same way machine learning algorithm are used to make predictions without giving them instructions (explaining the key characteristics) about how to do the predictions, but rather by feeding them examples.
+The idea behind it is to emulate the learning process of a human-being in order to make predictions about new data. If for example one wanted to teach a kid how to recognize a cat, the simpler approach would be to show it cats or pictures of them, instead of trying to explain it the key characteristics of cats. In a similar way machine learning algorithms are used to solve tasks without giving them instructions about how to solve them (explaining the key characteristics), but rather by feeding them examples.
 
-The branch of machine learning used in this thesis is called ``supervised learning'' which builds models learning from data which contain the input variables and the desired output value, often refereed to as labels.
-The machine learning algorithm is then used to find the target function $f$ which better maps input vector $X$ to an output one $Y$.
+The branch of machine learning used in this thesis is called ``supervised learning'' which builds models learning from data containing the input variables (often referred to as features) and the desired output values, often refereed to as labels.
+The machine learning algorithm is then used to find the target function $f$ which better maps input the vector $X$ to an output one $Y$.
 \begin{equation}
 Y = f(X)
 \end{equation}
 The way this function is computed by the algorithm depends on the specific one chosen to achieve the desired result.
 
-In this thesis three different machine learning algorithm have been used to train models which estimate the ice thickness of glaciers using the GlaThiDa database as the desired output ($Y$) for the ice thickness, and using digital elevation models and some basic physics assumptions as the input values ($X$), to obtain the ice thickness distribution of the glacier.
+In this thesis three different machine learning algorithms have been used to train models which estimate the ice thickness of glaciers using the GlaThiDa database as the desired output ($Y$), and uses digital elevation models and some basic physical assumptions as the input values ($X$), to estimate the ice thickness distribution of the glacier.
 
-The three algorithm used are:
+The three algorithms used are:
 \begin{itemize}
 	\item Linear Regression
 	\item Random Forest Regression
@@ -120,17 +120,17 @@ The three algorithm used are:
 The algorithms have been applied to the data using the python package \href{https://scikit-learn.org/}{scikit learn}.
 %The way the algorithm achieves this without instructions from the programmer is with an iterative process which uses the training data to make a first prediction, compare the prediction with the the desired output value, 
 \subsection{Linear Regression}\label{linearregr}
-Linear Regression is probably one of the simplest machine learning algorithm and also one of the most used (even though many people probably don't know it is a machine learning algorithm).
+Linear Regression is probably one of the simplest machine learning algorithms and also one of the most used (even though many people probably don't know it is considered a machine learning algorithm).
 
-Given a set of input data $\bm{X} = \{x_{i1},\ldots ,x_{ip}\}_{i=1}^{n}$ and a corresponding output $\mathbf{y} = \{y_{1},\ldots ,y_{n}\}$, the algorithm finds the best set of $\bm{\beta} = \{\beta_{i1},\ldots ,\beta_{ip}\}_{i=1}^{n}$ and $\bm{\varepsilon} = \{\varepsilon_{1},\ldots ,\varepsilon_{n}\}$ such that:
+Given a set of input data $\bm{X} = \{x_{i1},\ldots ,x_{ip}\}_{i=1}^{n}$ and a corresponding output $\mathbf{y} = \{y_{1},\ldots ,y_{n}\}$, the algorithm finds the best set of $\bm{\beta} = \{\beta_{i1},\ldots ,\beta_{ip}\}_{i=1}^{n}$, and $\varepsilon$, a scalar often referred to as the intercept, such that:
 \begin{equation}\label{eq:linear}
-\mathbf {y} = \bm{\varepsilon} + \bm{\beta}\bm{X}
+\mathbf {y} = \varepsilon + \bm{\beta}\bm{X}
 \end{equation}
-In order to find $\bm{\varepsilon}$ and $\bm{\beta}$ which best predict the desired $\mathbf {y}$, one of the most common approaches is to minimize the loss function
+In order to find $\varepsilon$ and $\bm{\beta}$ which best predict the desired $\mathbf {y}$, one of the most common approaches is to minimize the loss function
 \begin{equation}
-\frac{1}{n}\sum_{1}^{n}(pred_i-y_i)^2
+\frac{1}{n}\sum_{1}^{n}(y_i-y^*_i)^2
 \end{equation}
-where $pred_i$ is the value of the $i$-th prediction generated by the model.
+where $y_i$ is the value of the $i$-th prediction generated by the model and $y^*_i$ is the corresponding value the model is trying to predict.
 
 This algorithm is clearly only useful for cases when the output variables linearly depend on the input ones. This is however often not the case thus requiring most sophisticated models to compute the desired output values. It can be helpful however to compare this method to the more sophisticated ones to have a basic reference on their performances.
 
@@ -141,7 +141,7 @@ This algorithm is clearly only useful for cases when the output variables linear
 	\caption{Representation of a decision tree model. The tree is pictured upside-down with the root on the top and the branches and leaves on the bottom.}
 	\label{fig:tree}
 \end{figure}
-Random Forest is an algorithm which uses ensemble learning to extend and improve the performances of decision trees algorithm. The method was first proposed by \citet{RandomHo1995}. A decision tree is an algorithm used to predict the desired value from a set of data. It works by splitting the data-set into a number of branches by imposing conditions on each feature. Every split leads to a subset of the data-set which can be split further to better achieve the desired outcome(see \ref{fig:tree}). In order to choose how to split the data on each node the algorithm calculates the sum of the squared residual for splitting the data-set on a particular condition and chooses the condition which minimizes this sum. Let $\bm{X} = \{x_{i1},\ldots ,x_{ip}\}_{i=1}^{n}$ be the $n$-th input values $p$ the different attributes  our data-set and $\mathbf{y} = \{y_{1},\ldots ,y_{n}\}$ the output values (the values we want to predict). Let's assume for simplicity that we are splitting the data based on a condition on the first attribute. The first split in the tree divides the data-set into two subsets $S_1$ with $l$ data points and $S_2$ with $n-l$ data points. The subsets are defined by minimizing the following:
+Random Forest is an algorithm which uses ensemble learning to extend and improve the performances of decision trees algorithm. The method was first proposed by \citet{RandomHo1995}. A decision tree is an algorithm used to predict the desired value from a set of data. It works by splitting the data-set at so called nodes, into a number of branches by imposing conditions on each feature. Every split leads to a subset of the data-set which can be split further to better achieve the desired outcome (see \ref{fig:tree}). In order to choose how to split the data on each node the algorithm calculates the sum of the squared residual for splitting the data-set on a particular condition and chooses the condition which minimizes this sum. Let $\bm{X} = \{x_{i1},\ldots ,x_{ip}\}_{i=1}^{n}$ be the $n$-th input values $p$ the different attributes  our data-set and $\mathbf{y} = \{y_{1},\ldots ,y_{n}\}$ the output values (the values we want to predict). Let's assume for simplicity that we are splitting the data based on a condition on the first attribute. The first split in the tree divides the data-set into two subsets $S_1$ with $l$ data points and $S_2$ with $n-l$ data points. The subsets are defined by minimizing the following:
 \begin{equation}\label{eq:treeres}
 \sum_{i \in S_1}(\overline{y_1}-y_i)^2 + \sum_{j \in S_2}(\overline{y_2}-y_j)^2
 \end{equation}
