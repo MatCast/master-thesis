@@ -122,7 +122,7 @@ The algorithms have been applied to the data using the python package \href{http
 \subsection{Linear Regression}\label{linearregr}
 Linear Regression is probably one of the simplest machine learning algorithms and also one of the most used (even though many people probably don't know it is considered a machine learning algorithm).
 
-Given a set of input data $\bm{X} = \{x_{i1},\ldots ,x_{ip}\}_{i=1}^{n}$ and a corresponding output $\mathbf{y} = \{y_{1},\ldots ,y_{n}\}$, the algorithm finds the best set of $\bm{\beta} = \{\beta_{i1},\ldots ,\beta_{ip}\}_{i=1}^{n}$, and $\varepsilon$, a scalar often referred to as the intercept, such that:
+Given a set of input data $\bm{X} = \{x_{i1},\ldots ,x_{ip}\}_{i=1}^{n}$ and a corresponding output $\mathbf{y} = \{y_{1},\ldots ,y_{n}\}$, the algorithm finds the best set of $\bm{\beta} = \{\beta_{1},\ldots ,\beta_{p}\}$, and $\varepsilon$, a scalar often referred to as the intercept, such that:
 \begin{equation}\label{eq:linear}
 \mathbf {y} = \varepsilon + \bm{\beta}\bm{X}
 \end{equation}
@@ -254,12 +254,17 @@ R^2 = 1 - \frac{\sum_{i}^{n}(y^*_i-y_i)^2}{\sum_{i}^{n}(y^*_i-\overline{y^*})^2}
 The best possible score is $R^2 = 1$ and it can be negative (because the model can be arbitrarily bad). A model always predicting the same constant value of $y$ independently on the input values would get a $R^2 = 0$. Note that the $R^2$ score can be negative in case the model performance were worse than a model with constant output $y$.
 
 \section{Features Importance}\label{featuresimp}
-Aside for making predictions trained machine learning models can be used to gather information about the importance of each feature in the training data-set. In other words it is possible to get information about which of the features have the most influence when making a prediction. This can be interesting to understand the physical processes driving the ice thickness distribution.
+Aside for making predictions trained machine learning models can be used to gather information about the importance of each feature in the training data-set. In other words it is possible to understand which of the features have the most influence when making a prediction. This can be interesting to understand the physical processes driving the ice thickness distribution.
 
-In a linear model this could be easily done my looking at the the magnitude of the coefficients of the linear equation \ref{eq:linear}. In other words one would look at the values of the components of the $\mathbf{w}$ vector. The higher the magnitude the more influential is that feature on making prediction.
-However for more complex models like the Support Vector Regression and Random Forest Regression it is not possible to obtain these values because the relationship between the input values and the predicted ones is non-linear. This would actually be possible in the case of a Support Vector Regression using a linear kernel but the space transformation applied by non linear kernel trick makes this impossible.
+In a linear model this is achievable by looking at the the magnitude of the coefficients of the linear equation \ref{eq:linear}. We would then look at the magnitude of the components of $ \bm{\beta} = \{\beta_{1},\ldots ,\beta_{p}\}$. The higher the magnitude, the more influential the feature when making predictions.
 
-To solve the aforementioned problem and gather information about the importance of the features two alternative methods have been used:
+For more complex models like support vector regression and random forest regression however, it is not possible to obtain these values because the relationship between the input values and the predicted ones is non-linear.
+
+As seen in section \ref{random-forest} it is possible for the random forest regression to get information about the feature importance by looking at the reduction in variance in the nodes.
+
+Looking a the coefficients of $\mathbf{w}$ (see Eq. \ref{eq:svm}) would be a way of assessing feature importance for the support vector regression. This would only work however, for a linear kernel. The space transformation applied by non linear kernels makes looking at these coefficients useless.
+
+To the tackle this problem and gather information about the importance of the features two alternative methods have been used:
 \begin{itemize}
 	\item Permutation Importance
 	\item Partial Dependence plots
@@ -274,14 +279,20 @@ To solve the aforementioned problem and gather information about the importance 
 	\label{fig:permutation}
 \end{figure}
 
-Permutation importance is a simple yet effective way of getting information about which feature drives the outcome in the predictions. To use this method one needs to split the data into two group, one for training and one for testing as reported in section \ref{training}. The method works by training the model as usual. After training is completed the accuracy of the model is tested using the sample left out from the training process. Instead of using the validation inputs as they are in though, the input values from one of the features get randomly shuffled. In this way for example for the selected feature the $i$-th input value corresponding to the $i$-th label gets switched with the $j$-th one corresponding to the $j$-th output one. Now when trained the model will get the $j$-th input value for the $i$-th output one and vice-versa. This happens for all the inputs in the selected feature. The score of the model as defined in Eq. \ref{eq:score} is computed, and the process is repeated several time in order to have a distribution of scores with different shuffled samples. An average value for the difference between the score of the non shuffled validation sample and the shuffled sample is computed together with it's standard deviation.
+Permutation importance is a simple yet effective way of getting information about which feature drives the outcome in the predictions. 
+
+The data is split into two sub-sets, one for training and one for testing as reported in section \ref{training}. The model is then trained as usual. After training is completed the accuracy of the model is assessed (see Eq. \ref{eq:score}) using the sample left out from the training process. Then the input values from one of the features is randomly shuffled (see, Fig. \ref{fig:permutation}), the $R^2$ score coefficient is computed again, and the change in $R^2$ coefficient between the shuffled and un-shuffled prediction is calculated. 
+
+In this way, for example, for the selected feature $p$, the $i$-th input value corresponding, to the $i$-th output is switched with the $j$-th input, corresponding to the $j$-th output. To compute the score, the model will get the $j$-th input value for the $i$-th output one and vice-versa. This happens for all the input values for the selected feature. The score of the model is computed, and the process is repeated $m$ times in order to have a distribution of scores with different shuffled samples. An average value for the difference between the score of the non shuffled sample and the shuffled one is computed together with it's standard deviation.
+The permutation importance coefficient for the feature $p$ is then:
 
 \begin{equation}\label{eq:perm}
-P = S^*-\overline{S_p}
+P_p = \frac{1}{m}\sum_{k=1}^{m}S^*-{S_{p,k}}
 \end{equation} 
-where $S^*$ represents the score of the non-shuffled sample and $\overline{S_p}$ the average score for the shuffled sample.
-This process is repeated for all the features in the input data to get the permutation importance coefficient for all of them.
-A higher coefficient means that shuffling the input values for the considered feature resulted in a decrease in the performance of the model. The higher the coefficient then, the higher should be the importance of the feature for computing the prediction. The value of the coefficient can be negative meaning that shuffling the features actually improved the performance of the model and that the feature is probably not influencing the prediction.
+where $S^*$ represents the score of the non-shuffled sample, and $S_{p,k}$ the score for the $k$-th sample, where the feature $p$ has been shuffled.
+The process is repeated for all the features in the input data, and the permutation importance coefficient is calculated for all of them.
+
+A higher coefficient means that shuffling the input values for the considered feature resulted in a decrease in the performance of the model. The higher the permutation importance coefficient then, the higher should be the importance of the feature for computing the prediction. The value of the $P_p$ can be negative meaning that shuffling the features actually improved the performance of the model and that the feature is probably not influencing the prediction.
 
 \subsection{Partial Dependence Plots}
 Partial dependence plots are simple charts which show the change in value of the prediction dependent on the change in value for the feature one wants to analyze. They are a way of visualizing the $\mathbf{w}$ vector in cases for which the vector coefficients can not be extrapolated. Features more relevant to the prediction will show higher changes in the prediction outcome with changes in the feature value.
