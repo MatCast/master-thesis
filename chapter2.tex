@@ -301,9 +301,9 @@ For the linear regression model these plots will look like straight lines, with 
 
 \section{Choosing the Features to train the models}\label{features}
 
-\begin{table}
+\begin{table}[!bp]
 	\centering
-	\caption{Representation of the data-set used to train the model: rows are grid cells with thickness observations associated with them. Each row is made of $p$ features each connected to a single thickness.}
+	\caption{Representation of the data-set used to train the model: rows are grid cells with thickness observations associated with them. Each row contains $p$ features and a single thickness value.}
 	\label{tab:features}
 	\begin{tabular}{|c|c|c|c|c|c|c|} 
 		\cline{2-7}
@@ -323,7 +323,7 @@ For the linear regression model these plots will look like straight lines, with 
 \end{table}
 
 
-The GlaThiDa database comes ``only'' with ice thickness observations. There is no information about relevant data which could influence the ice thickness distribution for the glaciers. To train a machine learning model however, it is necessary to feed the algorithm some input variables which should influence the ice thickness. Any variable could be chosen in order to do this, but it is sensible to choose from those which are believed to be responsible for the ice thickens distribution. At the end of the process of choosing the features one ends up with a data-set looking like Table \ref{tab:features}. Each row represents a grid cell on the glacier map with ice thickness observations and each of them is associated with $p = 4$ features. Features are used as input values from the machine learning algorithm to and the ice thickness measurements are the desired output for these input values. 
+The GlaThiDa database comes ``only'' with ice thickness observations. There is no information about relevant data which could influence the ice thickness distribution for the glaciers. To train a machine learning model however, it is necessary to feed the algorithm some input variables, which should influence the ice thickness. Any variable could be chosen in order to do this, but it is sensible to choose from those, which are believed to be responsible for the ice thickens distribution. At the end of the process of choosing the features we end up with a data-set looking like Table \ref{tab:features}. Each row represents a grid cell of the glacier surface map with ice thickness observations, and each of them is associated with $p$ features. Features are used as input values from the machine learning algorithm, and the ice thickness measurements are the desired output for these input values. 
 
 
 \subsection{The features chosen}\label{features-chosen}
@@ -333,17 +333,17 @@ The input variables used to train the models have been chosen from simple geomet
 	\item Topography (Altitude above sea level)
 	\item Distance from the border of the glacier
 	\item Slope angle
-	\item Linear Mass Balance
+	\item Altitude Dependent Linear Mass Balance 
 \end{itemize}
-The altitude has been chosen for two reasons: relative altitude, altitude compared to the lowest point of the glacier, is a proxy for glacier flow as the ice-flow in a glaciers is driven by gravity,. Absolute altitude on the other hand can be useful in picking differences between one glacier and another.
+The altitude has been chosen for two reasons: relative altitude, altitude compared to the lowest point of the glacier, is a proxy for glacier flow as the ice-flow in a glaciers is driven by gravity. Absolute altitude, on the other hand, can be useful in determining differences between one glacier and another.
 
-The distance from the border should be proportional to the ice thickness, as in general the ice gets thinner near the borders of the glaciers and thicker in it's center. 
+The distance from the border is calculated as the distance to the nearest glacier border. In general, it should be proportional to the ice thickness, as in general the ice gets thinner near the borders of the glaciers and thicker in its center. 
 
-The slope angle determines the steepness of the topography and is proportional to the ice flux velocity.
+The slope angle determines the steepness of the topography, and is calculated through its gradient. A higher slope angle should correspond to thinner ice thickness \cite[P. 298]{cuffey2010physics}.
 
-The linear mass balance is a constant mass balance as a linear function of altitude. It assumes that the altitude integrated mass balance over the whole glacier is zero. The point-wise linear mass balance, then is computed as the sum of the mass balance of the grid-cell itself plus the sum of the mass balance of all the grid-cells above it. 
+The altitude dependent linear mass balance  is a constant mass balance as a linear function of altitude. It assumes that the altitude integrated mass balance over the whole glacier surface is zero. The point-wise altitude dependent linear mass balance for each grid-cell, is computed as the linear mass balance of the grid-cell itself, plus the sum of the of the liner mass balance of all the grid-cells above it. Larger altitude dependent linear mass balance mean that the grid cell is accumulating more ice than it is loosing, hence it should mean thicker ice. 
   
-\subsection{Putting together the features}
+\subsection{Obtaining the features values}
 As mentioned GlaThiDa comes with no information about the glaciers aside for the ice thickness observations. In order to get the input data mentioned in the previous section, the OGGM model has been used. This is an open source python based model for modeling glaciers around the globe. The main way it has been used for this thesis was to download and put together the digital elevation models, smooth them if needed and project them to create a map of the glaciers using RGI for the glaciers outlines. The features where then computed from OGGM using basic geometrical formulas. 
 
 Each entry point in the training data-sets correspond then to a grid cell of the DEM created by OGGM. The ice thickness used as label for the training data-sets is then not directly the one coming from the GlaThiDa database. It is rather the averaged ice thickness observed over the grid cell of the DEM.
