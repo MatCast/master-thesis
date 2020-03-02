@@ -295,11 +295,11 @@ The process is repeated for all the features in the input data, and the permutat
 A higher coefficient means that shuffling the input values for the considered feature resulted in a decrease in the performance of the model. The higher the permutation importance coefficient then, the higher should be the importance of the feature for computing the prediction. The value of the $P_p$ can be negative meaning that shuffling the features actually improved the performance of the model and that the feature is probably not influencing the prediction.
 
 \subsection{Partial Dependence Plots}
-Partial dependence plots are simple charts which show the change in value of the prediction dependent on the change in value for the feature one wants to analyze. They are a way of visualizing the $\mathbf{w}$ vector in cases for which the vector coefficients can not be extrapolated. Features more relevant to the prediction will show higher changes in the prediction outcome with changes in the feature value.
+Partial dependence plots are simple charts, which show the change in value of the prediction, dependent on the change in value for the feature one wants to analyze. Each feature value is changed without changing the others, which allows for a visualization of how each feature partially influences the outcome of the prediction. Features more relevant to the prediction will show larger changes in the prediction outcome.
 
-For the linear regression model these plots will look like straight lines with higher steepness indicating more relevance in the prediction outcome. For non linear models these lines could diverge very much from a straight line; the feature could even show up to be more or less relevant when changing in value.  
+For the linear regression model these plots will look like straight lines, with stepper lines indicating more relevance in the prediction outcome. For non linear models these lines could diverge very much from a straight line; the feature could be more or less relevant depending on the feature value itself.  
 
-\section{Choosing Features}\label{features}
+\section{Choosing the Features to train the models}\label{features}
 
 \begin{table}
 	\centering
@@ -323,7 +323,7 @@ For the linear regression model these plots will look like straight lines with h
 \end{table}
 
 
-The GlaThiDa database comes "only" with ice thickness observations. There is no information about relevant data which could influence the ice thickness distribution for the glaciers. To train a machine learning model however, it is necessary to feed the algorithm some input variables which should influence the ice thickness. Any variable could be chosen in order to do this, but it is sensible to choose from those which are believed to be responsible for the ice thickens distribution. At the end of the process of choosing the features one ends up with a data-set looking like Table \ref{tab:features}. Each row represents a grid cell on the glacier map with ice thickness observations and each of them is associated with $p = 4$ features. Features are used as input values from the machine learning algorithm to and the ice thickness measurements are the desired output for these input values. 
+The GlaThiDa database comes ``only'' with ice thickness observations. There is no information about relevant data which could influence the ice thickness distribution for the glaciers. To train a machine learning model however, it is necessary to feed the algorithm some input variables which should influence the ice thickness. Any variable could be chosen in order to do this, but it is sensible to choose from those which are believed to be responsible for the ice thickens distribution. At the end of the process of choosing the features one ends up with a data-set looking like Table \ref{tab:features}. Each row represents a grid cell on the glacier map with ice thickness observations and each of them is associated with $p = 4$ features. Features are used as input values from the machine learning algorithm to and the ice thickness measurements are the desired output for these input values. 
 
 
 \subsection{The features chosen}\label{features-chosen}
