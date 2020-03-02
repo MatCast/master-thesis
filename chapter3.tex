@@ -1,7 +1,7 @@
 \chapter{Results}\label{chap3}
 \thispagestyle{plain}
 
-As mentioned in Section \ref{chap2}, three machine learning algorithm have been used to train models used to predict glaciers ice thickness. The same procedure has been applied to all the algorithm used, in order to compare the results between the different models. 
+As mentioned in Section \ref{chap2}, three machine learning algorithms have been trained, and the resulting models used to predict glaciers ice thickness. The same procedure has been applied to all the algorithm used, in order to compare the results between the different models. 
 All the algorithm have been trained and tested using the data available in the GlaThiDa data-set in the alpine region. Only glaciers present in the GlaThiDa database belonging to Region 11 of the RGI (Central Europe) have been used in the following analysis.
 
 After training each algorithm the resulting model has been used to predict the ice volume of all the glaciers in the alps. This is useful to compare the results of these model to those computed by \citet{Farinotti2019} in the third ITMIX.
@@ -19,23 +19,23 @@ This is usually not the case with linear regression, hence in principle there is
 	\label{fig:lr-score}
 \end{figure}
 
-Figure \ref{fig:lr-score} shows the volume and score change  for 20 different sub-samples used for training the linear regression algorithm. Each number on the x-axis represents a different sample used for training: of all the alpine glaciers observations in the GlaThiDa, 75\% of them have been used for  training the model and the resulting 25\% to compute the score. 
+Figure \ref{fig:lr-score} shows the volume and score change  for 20 different sub-samples used for training the linear regression algorithm. Each number on the x-axis represents a different sample used for training: of all the alpine glaciers observations in the GlaThiDa, 75\% of them have been used for  training the model and the remaining 25\% to compute the score. 
 
 The volume shown on the left side of Figure \ref{fig:lr-score} has been computed on the full sample of glaciers but each time using the different model derived from training it with each sub-sample. The mean volume for the 20 different sub-samples is $1.60\times 10^{10}$ $m^3$ with a relative standard deviation of 0.74\%. Sample 14 clearly predicts the lowest of all volumes.
 
 \begin{figure}[!tp]
 	\centering		  
 	\includegraphics[width=1.\textwidth]{figures/LR_thick_map.pdf}
-	\caption{Linear Regression: Ice thickness distribution for two glaciers on top of the terrain slope angle. On the left one of the glaciers used for training the model. On the right one of the glaciers outside those used for training the model.}
+	\caption{Linear Regression: Ice thickness distribution for two glaciers on top of the terrain slope angle. On the left, one of the glaciers used for training the model. On the right, one of the glaciers outside those used for training the model.}
 	\label{fig:lr-map}
 \end{figure}
 
 It is worth nothing that the model predicts ice thicknesses below zero for certain points. These have however been rounded to zero as a thickness below zero makes no physical sense.
 
-The average score is 0.402 with a high 25.1\% relative standard deviation. Clearly this is due to the score dropping for sub-samples 5, 14 and 19. For most sub-samples the score is in fact above 0.4 but for those three it drops even below 0.2. Sub-sample 14 then leads to the lowest volume and a low score compared to the average.
+The average score is 0.402 with a high 25.1\% relative standard deviation. Clearly this is due to the score dropping for sub-samples 5, 14 and 19. For most sub-samples the score is in fact above 0.4, but for those three it drops even below 0.2. Sub-sample 14 then leads to the lowest volume and a low score compared to the average.
 The linear regression model trained with all the data in the data-set has score of 0.32 which  is the lowest among the three models used.
 
-The total volume for the alps computed with the linear model is $1.40 \times 10^{11}m^3$ which is 9.8\% larger than the volume predicted by \citet{Farinotti2019}. Notably the glacier RGI60-11.00746 is the one with the highest volume according to \citet{Farinotti2019} but  the trained linear model predicts instead glacier RGI60-11.00106 to be the largest one by volume with RGI60-11.00746 being the 11th largest glacier according to the linear model.
+The total volume for the alps computed with the linear model is $1.40 \times 10^{11}m^3$ which is 9.8\% larger than the volume predicted by \citet{Farinotti2019}.
 
 \subsection{Features Importance}  
 
