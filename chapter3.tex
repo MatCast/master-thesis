@@ -19,14 +19,14 @@ This is usually not the case with linear regression, hence in principle there is
 	\label{fig:lr-score}
 \end{figure}
 
-Figure \ref{fig:lr-score} shows the volume and score change  for 20 different sub-samples used for training the linear regression algorithm. Each number on the x-axis represents a different sample used for training: of all the alpine glaciers observations in the GlaThiDa, 75\% of them have been used for  training the model and the remaining 25\% to compute the score. 
+Figure \ref{fig:lr-score} shows the volume and score change  for 20 different sub-samples used to train the linear regression algorithm. Each number on the x-axis represents a different sample used for training: of all the alpine glaciers observations in the GlaThiDa, 75\% of them have been used for  training the model and the remaining 25\% to compute the score. 
 
 The volume shown on the left side of Figure \ref{fig:lr-score} has been computed on the full sample of glaciers but each time using the different model derived from training it with each sub-sample. The mean volume for the 20 different sub-samples is $1.60\times 10^{10}$ $m^3$ with a relative standard deviation of 0.74\%. Sample 14 clearly predicts the lowest of all volumes.
 
 \begin{figure}[!tp]
 	\centering		  
 	\includegraphics[width=1.\textwidth]{figures/LR_thick_map.pdf}
-	\caption{Linear Regression: Ice thickness distribution for two glaciers on top of the terrain slope angle. On the left, one of the glaciers used for training the model. On the right, one of the glaciers outside those used for training the model.}
+	\caption{Linear Regression: Ice thickness distribution for two glaciers on top of the terrain slope angle. On the left, one of the glaciers used to train the model. On the right, one of the glaciers outside those used to train the model.}
 	\label{fig:lr-map}
 \end{figure}
 
@@ -78,7 +78,7 @@ Finally Fig. \ref{fig:lr-pdp} shows the change in thickness value for changes in
 \end{figure}
 
 \section{Random Forest Regression}\label{rfr}
-The same process of using different sub-samples for training the algorithm and testing its performance used in the linear regression case, has been used for the random forest algorithm. This is particularly important for random forests because they are very prone to over-fitting. Especially the parameters determining the maximum tree depth, and the one determining the minimum number of samples required to split the tree, are those which had to be carefully adjusted in order to maintain a good balance between the model performances, and its inability to generalize for samples not used for training it. The maximum tree depth parameter has been tuned in order for all the nodes to be expanded, until all the samples at the node would have the same label, or until the minimum sample necessary for the tree to split would be reached. The minimum sample required for the tree to split has been set to 5\% of the number of samples present in the training data-set.  
+The same process of using different sub-samples to train the algorithm and testing its performance used in the linear regression case, has been used for the random forest algorithm. This is particularly important for random forests because they are very prone to over-fitting. Especially the parameters determining the maximum tree depth, and the one determining the minimum number of samples required to split the tree, are those which had to be carefully adjusted in order to maintain a good balance between the model performances, and its inability to generalize for samples not used to train it. The maximum tree depth parameter has been tuned in order for all the nodes to be expanded, until all the samples at the node would have the same label, or until the minimum sample necessary for the tree to split would be reached. The minimum sample required for the tree to split has been set to 5\% of the number of samples present in the training data-set.  
 
 \subsection{Score and volume spread}\label{rfr-score}
 
@@ -100,11 +100,11 @@ The model trained with all the data available from GlaThiDa reached a score 0.57
 \begin{figure}[!tp]
 	\centering		  
 	\includegraphics[width=1.\textwidth]{figures/RFR_thick_map.pdf}
-	\caption{Random Forest Regression: Ice thickness distribution for two glaciers on top of the terrain slope angle. On the left, one of the glaciers used for training the model. On the right, one of the glaciers outside those used for training the model.}
+	\caption{Random Forest Regression: Ice thickness distribution for two glaciers on top of the terrain slope angle. On the left, one of the glaciers used to train the model. On the right, one of the glaciers outside those used to train the model.}
 	\label{fig:rfr-map}
 \end{figure}
 
-Contrary to the score values, the volume spread is not that high. The model seems to fail to correctly predict specific ice thickness, and its score is influenced by the sample chosen for training values. This does not however seems to influence the total volume predicted for the glaciers for which this volume has been computed.
+Contrary to the score values, the volume spread is not that high. The model seems to fail to correctly predict specific ice thickness, and its score is influenced by the sample chosen for training. This does not however seems to influence the total volume predicted for the glaciers for which this volume has been computed.
 
 In Fig. \ref{fig:rfr-map} the ice thickness distribution predicted by the model for two different glaciers is shown. The ice thickness distribution seems to be distributed in a rather discontinuous way, with large areas of the glaciers having relatively high but almost constant ice thickness values. 
 
@@ -119,7 +119,7 @@ Figure \ref{fig:rfr-heatmap} shows the coefficients deriving from the permutatio
 \begin{figure}[!tp]
 	\centering		  
 	\includegraphics[width=1.\textwidth]{figures/RFR_heatmap.pdf}
-	\caption{Random Forest Regression feature importance heatmaps: On the left the permutation coefficient; on the right the feature importance from the variance reduction method. Each row in the figure represents a sub-sample of the data used for training the algorithm. Each column represents respectively the permutation coefficient(left) or the variance reduction(right) value for the considered feature.}
+	\caption{Random Forest Regression feature importance heatmaps: On the left the permutation coefficient; on the right the feature importance from the variance reduction method. Each row in the figure represents a sub-sample of the data used to train the algorithm. Each column represents respectively the permutation coefficient(left) or the variance reduction(right) value for the considered feature.}
 	\label{fig:rfr-heatmap}
 \end{figure}
 
@@ -159,7 +159,7 @@ The total volume of ice for the alpine glaciers predicted by the support vector 
 \begin{figure}[!tp]
 	\centering		  
 	\includegraphics[width=1.\textwidth]{figures/SVR_thick_map.pdf}
-	\caption{Support Vector Regression: Ice thickness distribution for two glaciers on top of the terrain slope angle. On the left one of the glaciers used for training the model. On the right one of the glaciers outside those used for training the model.}
+	\caption{Support Vector Regression: Ice thickness distribution for two glaciers on top of the terrain slope angle. On the left one of the glaciers used to train the model. On the right one of the glaciers outside those used to train the model.}
 	\label{fig:svr-map}
 \end{figure}
 
@@ -169,7 +169,7 @@ Unlike linear and random forest regression, support vector regression doesn't ha
 \begin{figure}[!tp]
 	\centering		  
 	\includegraphics[width=0.8\textwidth]{figures/SVR_heatmap.pdf}
-	\caption{Support Vector Regression feature importance heatmap: each row in the figure represents a sub-sample of the data used for training the algorithm. Each column represents the permutation coefficient value for the considered feature.}
+	\caption{Support Vector Regression feature importance heatmap: each row in the figure represents a sub-sample of the data used to train the algorithm. Each column represents the permutation coefficient value for the considered feature.}
 	\label{fig:svr-heatmap}
 \end{figure}
 
