@@ -28,14 +28,14 @@ In this chapter an overview of the data used to train the machine learning model
 \section{Data Sets}\label{glathida}
 The first section gives an overview of the data used in the analysis done in this thesis. The data used to train and analyze the machine learning models are: the Glacier Thickness Database (GlaThiDa), the Randolph Glacier Inventory (RGI), and different digital elevation models (DEMs) which depend on the specific glacier. Depending on the region in fact, some digital elevation models are a better fitted to each glacier, as all of the freely available ones have missing data. ``The best'' digital elevation model for each glacier has been automatically chosen by the Open Global Glacier Model (OGGM). Through most of the analysis SRTM v4 (\citet{SRTM}) which is a 90m grid resolution DEM has been used. Other DEM have been used to link the GlaThiDa with RGI (see section \ref{GlaRGI})
 
-\subsection{GlaThiDa}
+\subsection{Glacier Thickness Database}
 The Glacier Thickness Database (\citet{GlaThiDa2014}) is the most comprehensive set of data including available ice thickness measurements from glaciers and ice caps all around the globe. The database is composed of three different tables. The first one contains an overview of the database, the second one thickness data from maps or digital elevation models (DEM), and the third one, the one used in this thesis, contains the actual ice thickness observations. The measurements were taken with different methods such as terrestrial and airborne radio-echo sounding, ground penetrating radar, direct drilling and other methods. The first database was released in 2014. In 2016 a second version 2.0 and its correction 2.1 were released, and in 2019 version 3.0 and 3.01 were finally released. All the analysis in this work have been done using version 2.1 as version 3.0 was released after most of the analysis were already done. According to the GlaThiDa \href{https://github.com/ezwelty/glathida/blob/master/CHANGELOG.md}{change-log} however most of the changes have been done to the structure of the data base. There were however, some measurements additions to the database. The addition of some measurements for some glaciers in Switzerland in particular could be relevant for this thesis, given that most of the analysis done in this work has been conducted over the alpine glaciers. 
 %Use subsections to structure your thesis. The first and second component of the
 %momentum equation is shown in equation (\ref{2equ:1}) and (\ref{2equ:2}),
 %respectively. Together with (\ref{2equ:3}) they form the set of shallow-water
 %equations implemented in a numerical model.
 
-\subsection{RGI}
+\subsection{Randolph Glacier Inventory}
 The Randolph Glacier Inventory (RGI) (\citet{RGI2014}) is a global database of outlines of glaciers and ice caps. The inventory has been compiled from satellite imagery collected since 1999 onward. Most of the outlines don't express a specific picture in time of the glacier, but are a compound of different images of each glacier due to images obstructions such as cloud covers or satellite orbits. The first version of this inventory was released in 2012 and the latest version, RGI Version 6.0 was released in 2017. In this latest release the database comprises more than 220,000 glacier outlines which are divided in 19, regions covering all areas in the world with glaciers. This is the version used for all the analysis in this thesis. 
 
 
@@ -117,7 +117,7 @@ The three algorithms used are:
 	\item Support Vector Regression (SVR)
 \end{itemize}
 
-The algorithms have been applied to the data using the python package \href{https://scikit-learn.org/}{scikit learn}.
+The algorithms have been applied to the data using the python package \href{https://scikit-learn.org/}{scikit learn}\citep{scikit}.
 %The way the algorithm achieves this without instructions from the programmer is with an iterative process which uses the training data to make a first prediction, compare the prediction with the the desired output value, 
 \subsection{Linear Regression}\label{linearregr}
 Linear Regression is probably one of the simplest machine learning algorithms and also one of the most used (even though many people probably don't know it is considered a machine learning algorithm).
@@ -364,7 +364,7 @@ In principle a supervised machine learning algorithm could learn from any input 
 
 As mentioned in section \ref{features-chosen}, the only features chosen for training the algorithm are those related to the geometrical properties of the glacier surface. No other piece of information, such as, for instance, the climate of the glacier region, is used to train the model. This could lead to a model which is not very precise in assessing the ice thickness of the glaciers. Furthermore regions with more thickness observations, would create a bias in training the algorithm. Those regions could end up influencing the model output for the whole globe.
 
-In order to avoid these problems we decided to arbitrarily train all the models on region 11 of the RGI inventory, corresponding to Central Europe and in particular the Alps. 
+In order to avoid these problems we decided to arbitrarily train all the models on region 11 of the RGI inventory, corresponding to Central Europe and in particular the Alps. This region accounts for a total of 3297 glaciers. Of those glaciers however only 106 have thickness observations in the GlaThiDa. After assigning each of these observations to a grid cell in each glacier map, the total number of thickness measurements available to train the models are 8800. When cross validating the model as described in section \ref{training}, a total of 6600 measurements are then used to train the models and 2200 to test them.
 
 \section{Volume Comparison}
 After training the machine learning algorithms with GlaThiDa observations and the features mentioned in section \ref{features-chosen} for glaciers with observations in the Alps, the models have been used to compute the total ice volume of all the glaciers in the Alps. The values obtained by these models are then compared to the ones obtained by \citet{Farinotti2019} who created a database of ice volume values for all the glaciers in the RGI inventory. This was created with an ensemble of 5 physically based glacier models. For the alpine region this include 3927 glaciers. However due to problems with computing some of the features needed to predict ice thickness with the machine learning models, 36 of those glaciers have been left out of the predictions with those models. According to the data from \citet{Farinotti2019} these 36 glaciers account for 0.06\% of the total volume of glaciers in the Alps. For the remaining 3891 glaciers in the alps \citet{Farinotti2019} predict a total volume of $1.29\times 10^{11}m^3$.
