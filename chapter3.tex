@@ -38,7 +38,7 @@ The linear regression model trained with all the data in the data-set has score 
 \begin{figure}[!tp]
 	\centering		  
 	\includegraphics[width=1.\textwidth]{figures/LR_thick_diff_map.pdf}
-	\caption{Linear Regression: Maps of two glaciers showing the glaciers surface and the difference between the observed ice thickness and the modeled ones.}
+	\caption{Linear Regression: Maps of two glaciers showing the glaciers surface and the difference between the modeled ice thickness and the  observed one.}
 	\label{fig:lr-diff-map}
 \end{figure}
 
@@ -116,18 +116,20 @@ The model trained with all the data available from GlaThiDa reached a score 0.57
 	\label{fig:rfr-map}
 \end{figure}
 
-Contrary to the score values, the volume spread is not that high. The model seems to fail to correctly predict specific ice thickness, and its score is influenced by the sample chosen for training. This does not however seem to influence the total volume predicted for the glaciers for which this volume has been computed.
-
-In Fig. \ref{fig:rfr-map} the ice thickness distribution predicted by the model for two different glaciers is shown. The ice thickness distribution seems to be distributed in a rather discontinuous way, with large areas of the glaciers having relatively high but constant ice thickness values.
-
 \begin{figure}[!tp]
 	\centering		  
 	\includegraphics[width=1.\textwidth]{figures/RFR_thick_diff_map.pdf}
-	\caption{Random Forest Regression: Maps of two glaciers showing the glaciers surface and the difference between the observed ice thickness and the modeled ones.}
+	\caption{Random Forest Regression: Maps of two glaciers showing the glaciers surface and the difference between the modeled ice thickness and the observed one.}
 	\label{fig:rfr-diff-map}
 \end{figure}
 
-The total volume for the alpine glaciers computed with the random forest regression model is $9.96 \times 10^{10}m^3$, which is 22.1\% lower than the volume predicted by \citet{Farinotti2019}.
+Contrary to the score values, the volume spread is not that high. The model seems to fail to correctly predict specific ice thickness, and its score is influenced by the sample chosen for training. This does not however seem to influence the total volume predicted for the glaciers for which this volume has been computed.
+
+In Fig. \ref{fig:rfr-map} the ice thickness distribution predicted by the model trained using all the available observations for two different glaciers is shown. The ice thickness distribution seems to be distributed in a rather discontinuous way, with large areas of the glaciers having relatively high but constant ice thickness values. It is also notable that the extreme values for ice thickness in both glaciers are the same. All this is to be expected for the random forest regression, as the values predicted at each leaf by the model are the mean of the ice thickness values for the samples which reached that leaf. This both implies that abrupt changes in ice thickness are to be expected and that the model is not able to predict values higher than the maximum ice thickness value reached in the training data-set.
+
+Fig. \ref{fig:rfr-diff-map} shows the difference in ice thickness between the model prediction and the observations. For both glaciers differences up to 100m are shown. For glacier RGI60-11.00746 ice thicknesses higher than the ones observed are visible in the middle-bottom part of the glacier towards its center and lower ones towards the border. This is similar to what already shown for the linear regression model. Higher predictions are very pronounced also in the top part of the glacier. For glacier RGI60-11.02773 the model predictions still show high differences with the observations, but the largest differences  seem to be less frequent compared to RGI60-11.02773. For this glacier the model predicts lower values than observed more frequently than higher ones. In general it seems to do a better job predicting this glacier ice thickness compared to the former one.
+
+The total volume for the alpine glaciers computed with the random forest regression model trained with all the available observations is $9.96 \times 10^{10}m^3$, which is 22.1\% lower than the volume predicted by \citet{Farinotti2019}.
 
 \subsection{Features Importance}\label{rfr-features}
 
