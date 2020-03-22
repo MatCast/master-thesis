@@ -4,7 +4,7 @@
 As mentioned in Section \ref{chap2}, three machine learning algorithms have been trained, and the resulting models used to predict glaciers ice thickness. The same procedure has been applied to all the algorithms used, in order to compare the results between the different models. 
 All the algorithm have been trained and tested using the data available in the GlaThiDa data-set in the Alpine region. Only glaciers present in the GlaThiDa database belonging to region 11 of the RGI (Central Europe) have been used in the following analysis.
 
-After training each algorithm the resulting model has been used to predict the ice volume of all the glaciers in the Alps. This is useful to compare the results of these models to those computed by \citet{Farinotti2019} in the third ITMIX.
+After training each algorithm the resulting model has been used to predict the ice volume of all the glaciers in the Alps. This is useful to compare the results of these models to those computed by \citet{Farinotti2019}.
 
 \section{Results from Linear Regression}\label{linear}
 The first model to be analyzed is the one obtained from training the linear regression algorithm. In order to assess how well a machine learning model makes predictions, a sub-sample of the data-set is usually left out from the training process (see section \ref{training}). With the left out data the score from Eq. \ref{eq:score} is computed by letting the model predict the values not used for training. This is done to make sure the model is not over-fitted. Complex machine learning algorithm in fact might be very good at predicting data inside the training sample but might perform much worse on data outside this sample (over-fitting). 
@@ -21,7 +21,7 @@ This is usually not the case with linear regression, hence in principle there is
 
 Figure \ref{fig:lr-score} shows the volume and score for 20 different sub-samples used to train the linear regression algorithm. Each number on the x-axis represents a different sample used for training: of all the alpine glacier observations in the GlaThiDa, 75\% of them have been used to train the model and the remaining 25\% to compute the score. 
 
-The volume shown on the left side of Fig. \ref{fig:lr-score} has been computed on the full sample of alpine glaciers with ice thickness observations. Each value shown in the figure is obtained with a different model, derived from training it with the sub-samples. The mean volume for the 20 different sub-samples is $1.60\times 10^{10}$ $m^3$ with a relative standard deviation of 0.74\%. Sample 14 clearly predicts the lowest of all volumes.
+The volume shown on the left side of Fig. \ref{fig:lr-score} has been computed on the full sample of alpine glaciers with ice thickness observations. Each value shown in the figure is obtained with a different model, derived from training it with the sub-samples. The mean volume for the 20 different sub-samples is $1.60\times 10^{10}$ $m^3$ with a relative standard deviation of 0.74\%. Sample 14 predicts the lowest of all volumes.
 
 \begin{figure}[!tp]
 	\centering		  
@@ -35,7 +35,19 @@ It is worth nothing that the model predicts ice thicknesses below zero for certa
 The average score is 0.402 with a high 25.1\% relative standard deviation. Clearly this is due to the score dropping for sub-samples 5, 14 and 19. For most sub-samples the score is in fact above 0.4, but for those three it drops even below 0.2. Sub-sample 14 then leads to the lowest volume and a low score compared to the average.
 The linear regression model trained with all the data in the data-set has score of 0.32 which  is the lowest among the three models used.
 
-The total volume for glaciers in the Alps computed with the linear model is $1.40 \times 10^{11}m^3$, which is 9.8\% larger than the volume predicted by \citet{Farinotti2019}.
+\begin{figure}[!tp]
+	\centering		  
+	\includegraphics[width=1.\textwidth]{figures/LR_thick_diff_map.pdf}
+	\caption{Linear Regression: Maps of two glaciers showing the glaciers surface and the difference between the observed ice thickness and the modeled ones.}
+	\label{fig:lr-diff-map}
+\end{figure}
+
+Fig. \ref{fig:lr-map} and \ref{fig:lr-diff-map} show respectively the ice thickness distribution, and the difference in ice thickness between the observations and the model, for the linear regression. Looking at the ice thickness distribution the model seem to predict a plausible distribution. These values have been achieved by training the model on the whole sample of observations available for the alpine region.
+ 
+The ice thickness difference from the observations for both glaciers reveals only few points to be accurately predicted by the model. Differences of of up to 100m are shown for both glaciers. For glacier RGI60-11.00746, Gepatschferner, the the model seem to do a better job at predicting the upper part of the glacier compared to the middle-bottom part. Particularly in this part it seems like for the center of the glacier the model overestimates the ice thickness while underestimating it for points lying closer to the glacier border. For glacier RGI60-11.02773 very few points seem to be predicted accurately. In particular, for the middle-bottom part of the glacier, and the central glacier flow-line, the model seem to almost always underestimate the ice thickness with values going from 25m to up to 100m lower than the observed ice thickness. In the top part of the glacier the highest positive differences are registered.
+
+After training the linear regression model with all the available observations for the alpine glaciers, their total volume estimated by the linear regression is $1.40 \times 10^{11}m^3$, which is 9.8\% larger than the volume predicted by \citet{Farinotti2019}.
+
 
 \subsection{Features Importance}  
 
@@ -68,7 +80,7 @@ Figure \ref{fig:lr-heatmap} shows the coefficients deriving from the permutation
 	\label{fig:lr-heatmap}
 \end{figure}
 
-Finally Fig. \ref{fig:lr-pdp} shows the change in thickness value for changes in values of the features. Features are scaled according to Eq. \ref{eq:scale}, hence the values on the x-axis of the figure do not represent the original input values, but the scaled ones used to train the model. Having scaled features helps reading this chart as features could have very different ranges and scales (for example altitudes ranging between  $2000m$ and almost $5000m$, compared to slope angles ranging from $0$ to $\frac{\pi}{4}$). Each line represents ice thickness changes when all other variables are kept constant. This provides for a visual comparison between the influence which each feature has on the prediction. For the linear regression case each line is a of course a straight line, but this will not be the case for the other models. Looking at the chart the same conclusions as for both the linear coefficient magnitude, and the permutation importance can be drawn.
+Finally Fig. \ref{fig:lr-pdp} shows the change in thickness value for changes in values of the features. Features are scaled according to Eq. \ref{eq:scale}, hence the values on the x-axis of the figure do not represent the original input values, but the scaled ones used to train the model. Having scaled features helps reading this chart as features could have very different ranges and scales (for example altitudes ranging between  $2000m$ and almost $5000m$, compared to slope angles ranging from $0$ to $\frac{\pi}{2}$). Each line represents ice thickness changes when all other variables are kept constant. This provides for a visual comparison between the influence which each feature has on the prediction. For the linear regression case each line is a of course a straight line, but this will not be the case for the other models. Looking at the chart the same conclusions as for both the linear coefficient magnitude, and the permutation importance can be drawn.
 
 \begin{figure}[!tp]
 	\centering		  
@@ -106,7 +118,14 @@ The model trained with all the data available from GlaThiDa reached a score 0.57
 
 Contrary to the score values, the volume spread is not that high. The model seems to fail to correctly predict specific ice thickness, and its score is influenced by the sample chosen for training. This does not however seem to influence the total volume predicted for the glaciers for which this volume has been computed.
 
-In Fig. \ref{fig:rfr-map} the ice thickness distribution predicted by the model for two different glaciers is shown. The ice thickness distribution seems to be distributed in a rather discontinuous way, with large areas of the glaciers having relatively high but almost constant ice thickness values. 
+In Fig. \ref{fig:rfr-map} the ice thickness distribution predicted by the model for two different glaciers is shown. The ice thickness distribution seems to be distributed in a rather discontinuous way, with large areas of the glaciers having relatively high but constant ice thickness values.
+
+\begin{figure}[!tp]
+	\centering		  
+	\includegraphics[width=1.\textwidth]{figures/RFR_thick_diff_map.pdf}
+	\caption{Random Forest Regression: Maps of two glaciers showing the glaciers surface and the difference between the observed ice thickness and the modeled ones.}
+	\label{fig:rfr-diff-map}
+\end{figure}
 
 The total volume for the alpine glaciers computed with the random forest regression model is $9.96 \times 10^{10}m^3$, which is 22.1\% lower than the volume predicted by \citet{Farinotti2019}.
 
