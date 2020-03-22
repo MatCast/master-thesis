@@ -173,7 +173,9 @@ The score shows a very similar pattern compared to the one shown in the linear r
 The value of the score for the model trained with all the data available from GlaThiDa is 0.45, which means that less than 50\% of the ice thickness variance is explained by the model. 
 
 The volume spread on the left of the figure shows a dispersion around 1.15\% and an average total volume of $1.53 \times 10^{10}m^3$. This is the lowest of all the models considered so far. 
-Looking at Fig. \ref{fig:svr-map}, the ice thickness distribution for the glacier RGI60-11.01450 immediately looks strange. The ice thickness for most of the glacier seem to be in the order of 75$m$ with much higher values only reached in the very bottom part of it. It seems that the model is actually predicting a constant ice thickness for most of the glacier. This is of course not a desirable result as ice thicknesses are presumed to change throughout the surface of the glacier. The same behavior is not visible in the left glacier which shows different ice thicknesses uniformly distributed all over the glacier surface. Notice that the left glacier is one used to train the model, while the right one isn't.
+Looking at Fig. \ref{fig:svr-map}, the ice thickness distribution for the glacier RGI60-11.01450, Aletsch glacier, immediately looks strange. The ice thickness for most of the glacier seem to be in the order of 75$m$ with much higher values only reached in the very bottom part of it. It seems that the model is actually predicting a constant ice thickness for most of the glacier. This is of course not a desirable result as ice thicknesses are presumed to change throughout the surface of the glacier. The same behavior is not visible in the left glacier which shows different ice thicknesses uniformly distributed all over the glacier surface. Notice that the left glacier is one used to train the model, while the right one isn't.
+
+Fig \ref{fig:svr-diff-map} shows differences between the ice thickness predicted by the trained support vector regression and the observed one. Both glaciers show differences up to 100m similarly similar to the linear regression and random forest cases. Despite these large difference values, the support vector regression seem to be the model achieving the highest accuracy of the ones used, if comparing the three charts (Fig. \ref{fig:lr-diff-map} and \ref{fig:rfr-diff-map}). Gepatschferner, RGI60-11.00746, shows again a higher predicted ice thickness for the middle-bottom part of the glacier towards its center, but a bit less pronounced than the other two models. In this area, toward the borders, the model predicts in general lower ice thicknesses than the observed values, but with differences not as pronounced as the ones showed for the other two cases. Again in the top part of this glacier many predictions higher than the observed ice thickness are present especially in the figure bottom-right part. For glacier RGI60-11.02773 the support vector regression seem to be doing accurate predictions for the top part of the glacier and less accurate, with many predictions underestimating the observed ice thickness, in the bottom part of it. 
 
 The total volume of ice for the alpine glaciers predicted by the support vector machine is $9.58 \times 10^{10}m^3$, which is the lowest of all the models and 25.1\% lower than the volume predicted by \citet{Farinotti2019} with their ensemble model.
 
@@ -182,6 +184,13 @@ The total volume of ice for the alpine glaciers predicted by the support vector 
 	\includegraphics[width=1.\textwidth]{figures/SVR_thick_map.pdf}
 	\caption{Support Vector Regression: Ice thickness distribution for two glaciers on top of the terrain slope angle. On the left one of the glaciers used to train the model. On the right one of the glaciers outside those used to train the model.}
 	\label{fig:svr-map}
+\end{figure}
+
+\begin{figure}[!tp]
+	\centering		  
+	\includegraphics[width=1.\textwidth]{figures/SVR_thick_diff_map.pdf}
+	\caption{Support Vector Regression: Maps of two glaciers showing the glaciers surface and the difference between the modeled ice thickness and the observed one.}
+	\label{fig:svr-diff-map}
 \end{figure}
 
 \subsection{Features Importance}\label{svr-features}
