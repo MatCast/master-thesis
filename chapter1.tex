@@ -3,13 +3,13 @@
 
 % ====SECTION 1 ================================================================
 \section{Motivation}\label{motivation}
-Estimating the volume of glaciers is becoming an increasingly important topic, due to the role this plays in climate change. Melting glaciers have in fact an impact in sea level rise (\citet{Zemp2017}), availability of fresh drinking water (\citet{Kaser2010}) and even energy supplied by hydro electric power plants(\citet{Terrier2011}). A reliable estimate of glaciers volume is key in order to properly compute the entity of these and other problems.
+Estimating the volume of glaciers is becoming an increasingly important topic, due to the role this plays in climate change. Melting glaciers have in fact an impact in sea level rise \citep{Zemp2017}, availability of fresh drinking water \citep{Kaser2010}) and even energy supplied by hydro electric power plants\citep{Terrier2011}. A reliable estimate of glaciers volume is key in order to properly compute the entity of these and other problems.
 
 Computing the volume of glaciers is a trivial task once in possession of the data needed for it: the glacier surface and its distributed ice thickness. These data however are not easily obtainable due to the amount of effort needed to collect them.
 
-A very big effort in this regard has been carried out in the creation of the Randolph Glacier Inventory (RGI) (\citet{RGI2014}), which is a data-set containing a globally complete inventory of glaciers and their surface shapes. From these surface shapes it is easy to compute the surface area of the glaciers.
+A very big effort in this regard has been carried out in the creation of the Randolph Glacier Inventory (RGI) \citep{RGI2014}, which is a data-set containing a globally complete inventory of glaciers and their surface shapes. From these surface shapes it is easy to compute the surface area of the glaciers.
 
-Ice thickness observations are collected in the Glacier Thickness Database (GlaThiDa \citet{GlaThiDa2014}), which is the first global effort in collecting all the available ice thickness data in a single database. These observations however, when compared with the glaciers contained in the RGI, are very lackluster (see \ref{glathida}). Out of the over 215,000 glaciers included in RGI, only 771 have thickness observations and, for most glaciers, there are not enough measurements to have a complete thickness distribution along the glacier surface. 
+Ice thickness observations are collected in the Glacier Thickness Database (GlaThiDa) \citep{GlaThiDa2014}, which is the first global effort in collecting all the available ice thickness data in a single database. These observations however, when compared with the glaciers contained in the RGI, are very sparse (see \ref{glathida}). Out of the over 215,000 glaciers included in RGI, only 771 have thickness observations and, for most glaciers, there are not enough measurements to have a complete thickness distribution along the glacier surface. 
 
 To obtain an estimate of volume for glaciers lacking thickness measurements (the vast majority of the global glaciers), the only possible alternative is to model them, which is where a big effort from the scientific glaciology community has been and is being directed.
   
@@ -27,7 +27,7 @@ To obtain an estimate of volume for glaciers lacking thickness measurements (the
 \section{State of Research}\label{research}
 Over the years a number of different approaches have been used to model glaciers and estimate their volumes.
 The simplest ones only attempt to compute these volumes from the relationship between the glacier surface and its volume as first stated by \citet{bahr1997}. Using the Buckingham Pi
-theorem they found that the relationship between the surface area $S$ and the volume of a glacier $V$ is $V \propto S^{\gamma}$ and they estimated $\gamma=1.375$ for these glaciers and $\gamma=1.25$ for ice caps. Similar approaches also take into consideration other other parameters such as glacier length, width, elevation range (\citet{Grinsted2013}), and surface slope. These type of methods are called ``scaling approaches'' and they yield to a volume estimate for each glacier but not to the distributed ice thickness. Due to the small requirements for their implementations they are very effective at computing the global volume of glaciers.
+theorem they found that the relationship between the surface area $S$ and the volume of a glacier $V$ is $V \propto S^{\gamma}$ and they estimated $\gamma=1.375$ for these glaciers and $\gamma=1.25$ for ice caps. Similar approaches also take into consideration other other parameters such as glacier length, width, elevation range \citep{Grinsted2013}, and surface slope. These type of methods are called ``scaling approaches'' and they yield to a volume estimate for each glacier but not to the distributed ice thickness. Due to the small requirements for their implementations they are very effective at computing the global volume of glaciers.
 
 A more sophisticated approach for calculating the volume of glaciers would be to numerically model the whole glacier and extrapolate the volume from the results of this simulation. Usually physical assumptions must be made to be able to reproduce the glacier bed from its surface ice distribution.
 First steps in this direction were made by \citet{Nye1965} in the study of  idealized glaciers. He pointed out that the distributed ice thickness could be inferred by the glacier surface slope using estimates of basal shear stress. From there many others developed this idea, such as \citet{haeberli1995} who made the assumption of a known constant basal shear stress, parameterized from the glacier elevation range, to estimate basic glaciological characteristics for glaciers in the Alps. 
@@ -36,7 +36,7 @@ From these basic concepts, many more approaches have emerged in the years after,
 
 All these achievements have been possible thanks to the advancement in research in the glaciological field and to the steadily increase in computational power and its availability. Models which could only be numerically computed for single glaciers, started expanding their range of possibilities, and \citet{Huss2012} released the first glacier model used to model all known glaciers and ice caps worldwide.
 
-Since then many more global scale glacier models able to predict ice thickness distribution have been released. Meanwhile the GlaThiDa database was being compiled. This led to the first Ice Thickness Models Intercomparison eXperiment (ITMIX) (\citet{Farinotti2017}), which is the first attempt to put together all those models and asses their accuracy on the base of known ice thickness observations available in the GlaThiDa, as well as comparing the models performances with each other. 
+Since then many more global scale glacier models able to predict ice thickness distribution have been released. Meanwhile the GlaThiDa database was being compiled. This led to the first Ice Thickness Models Intercomparison eXperiment (ITMIX) \citep{Farinotti2017}, which is the first attempt to put together all those models and asses their accuracy on the base of known ice thickness observations available in the GlaThiDa, as well as comparing the models performances with each other. 
 
 The experiment focused on 17 glacier models able to predict glacier ice thickness on a global scale. The task of each model was to estimate the ice thickness distribution of at least some of 15 glaciers, 3 ice caps and 3 synthetically grown glaciers. The output of the models was compared with data available from the GlaThiDa and with the other models. A composite solution from all the participating models achieved a local ice thickness difference in the order of $10 \pm 24\%$ of the mean ice thickness. In general however the spread of the solutions obtained by the single models often exceeded the local ice thickness, concluding that an ensemble approach could mitigate errors and would reduce the random nature of single models output.  
 
@@ -92,13 +92,13 @@ The importance glaciers play in climate change and climate modeling, the availab
 \section{Goals and Outline}\label{goals}
 In this thesis three different machine learning algorithms have been chosen to  create models able to predict glacier ice thickness. The algorithms have all been trained on the same data-set, the GlaThiDa which contains ice thickness observations for glaciers worldwide.
 
-To train the algorithm a set of attributes (often called features), mainly geometrical, have been generated using the Open Global Glacier Model (OGGM) (\citet{OGGM2019}). This attributes are all computable by the only mean of a digital elevation model for the considered glacier, and the outline of the glacier given by the RGI.
+To train the algorithm a set of attributes (often called features), mainly geometrical, have been generated using the Open Global Glacier Model (OGGM) \citep{OGGM2019}. This attributes are all computable by the only mean of a digital elevation model for the considered glacier, and the outline of the glacier given by the RGI.
 
 The accuracy of the models have been estimated comparing their predictions with the observations from the GlaThiDa as well as with themselves.
 
 An analysis of the most influential attributes in making predictions has been carried out.
 
-Finally the obtained models have been used to predict the volume of all the alpine glaciers and compare their results with those of the third ITMIX (\citet{Farinotti2019}).
+Finally the obtained models have been used to predict the volume of all the alpine glaciers and compare their results with those of the third ITMIX \citep{Farinotti2019}.
 
 
 This thesis then tries to establish:
