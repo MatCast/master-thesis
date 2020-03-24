@@ -368,6 +368,31 @@ In order to avoid these problems we decided to arbitrarily train all the models 
 
 \section{Volume Comparison}
 After training the machine learning algorithms with GlaThiDa observations and the features mentioned in section \ref{features-chosen} for glaciers with observations in the Alps, the models have been used to compute the total ice volume of all the glaciers in the Alps. The values obtained by these models are then compared to the ones obtained by \citet{Farinotti2019} who created a database of ice volume values for all the glaciers in the RGI inventory. This was created with an ensemble of 5 physically based glacier models. For the alpine region this include 3927 glaciers. However due to problems with computing some of the features needed to predict ice thickness with the machine learning models, 36 of those glaciers have been left out of the predictions with those models. According to the data from \citet{Farinotti2019} these 36 glaciers account for 0.06\% of the total volume of glaciers in the Alps. For the remaining 3891 glaciers in the alps \citet{Farinotti2019} predict a total volume of $1.29\times 10^{11}m^3$.
+
+
+\section{Data and code availability}
+In this section the source of all the data and code used for this thesis is presented.
+
+\subsection{Data}
+\begin{itemize}
+	\item GlaThiDa: \href{https://www.gtn-g.ch/data_catalogue_glathida/}{https://www.gtn-g.ch/data\_catalogue\_glathida/}
+	\item RGI: \href{https://www.glims.org/RGI/}{https://www.glims.org/RGI/}
+	\item SRTM (DEM) \href{http://srtm.csi.cgiar.org/}{http://srtm.csi.cgiar.org/}
+\end{itemize}
+
+Other digital elevation models (DEMs) have been used to generate the statistics about GlaThiDa in section \ref{glathida}.
+
+\subsection{Code}
+All the analysis and scripts used for this thesis have been written in python.
+\begin{itemize}
+	\item Analysis results and discussion: \href{https://github.com/MatCast/GlaThiDa-RGI}{https://github.com/MatCast/GlaThiDa-RGI}
+	\item Machine learning resources: \href{https://scikit-learn.org/}{https://scikit-learn.org/}
+	\item Creation of features and glaciers grid-maps: \href{https://docs.oggm.org/}{https://docs.oggm.org/}
+\end{itemize}
+
+
+ 
+
 %\subsubsection{Subsubsection}
 %You can also use ``subsubsections''. However, they do not carry a separate
 %heading number and they do not appear in the Table of Contents.
